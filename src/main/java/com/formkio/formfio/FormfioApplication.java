@@ -2,21 +2,18 @@ package com.formkio.formfio;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
+// Usually, this should all there is. Unless there is more specific initalizers, then declare that in
+// a method which could be called easily instead and then call it in the main().
 @SpringBootApplication
-@RestController
 public class FormfioApplication {
-
+	// What is happening here is probably just using .class to get all declared methods and such.
 	public static void main(String[] args) {
-		SpringApplication.run(FormfioApplication.class, args);
+		startSpring(args);
 	}
 
-	@GetMapping("/hello")
-	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-		return String.format("Hello %s!", name);
+	public static void startSpring(String[] args) {
+		SpringApplication.run(FormfioApplication.class, args);
 	}
 
 }
