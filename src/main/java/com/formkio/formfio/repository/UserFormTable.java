@@ -5,6 +5,4 @@ import java.util.List;
 
 public interface UserFormTable {
     List<String> getFields(String formId);
-
-    void createTable() throws SQLException;
 }

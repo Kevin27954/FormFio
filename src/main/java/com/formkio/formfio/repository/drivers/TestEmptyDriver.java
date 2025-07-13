@@ -30,8 +30,4 @@ public class TestEmptyDriver implements DBDriver {
 
     }
 
-    @Override
-    public void executeStatement(String statement) throws SQLException {
-
-    }
 }
