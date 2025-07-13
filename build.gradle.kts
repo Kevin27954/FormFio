@@ -22,6 +22,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework:spring-web:6.2.8")
 	implementation("org.springframework.boot:spring-boot-starter-web:3.5.3")
+	implementation("org.xerial:sqlite-jdbc:3.50.2.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
