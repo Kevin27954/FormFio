@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT NOT NULL,
     account_plan INTEGER,
     is_referred INTEGER,
-    free_trail INTEGER
+    free_trial INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS endpoints (
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS forms (
     user TEXT NOT NULL,
     form_name TEXT NOT NULL,
     description TEXT,
-    endpoint TEXT NOT NULL REFERENCES endpoints(endpoint),
+    endpoint TEXT NOT NULL UNIQUE REFERENCES endpoints(endpoint),
     created_date INTEGER DEFAULT (DATETIME('now', 'subsec'))
 );
 
@@ -30,3 +30,5 @@ CREATE TABLE IF NOT EXISTS submissions (
     endpoint TEXT NOT NULL REFERENCES endpoints(endpoint),
     created_date INTEGER DEFAULT (DATETIME('now', 'subsec'))
 );
+
+INSERT INTO users(email,account_plan, is_referred, free_trial) VALUES ('kevinl33078@gmail.com', 0, 0, 0)

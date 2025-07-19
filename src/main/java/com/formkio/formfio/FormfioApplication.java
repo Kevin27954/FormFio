@@ -7,13 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // a method which could be called easily instead and then call it in the main().
 @SpringBootApplication
 public class FormfioApplication {
-	// What is happening here is probably just using .class to get all declared methods and such.
-	public static void main(String[] args) {
-		startSpring(args);
-	}
+    // What is happening here is probably just using .class to get all declared methods and such.
+    public static void main(String[] args) {
+        startSpring(args);
+    }
 
-	public static void startSpring(String[] args) {
-		SpringApplication.run(FormfioApplication.class, args);
-	}
+    public static void startSpring(String[] args) {
+        SpringApplication.run(FormfioApplication.class, args);
+    }
 
 }

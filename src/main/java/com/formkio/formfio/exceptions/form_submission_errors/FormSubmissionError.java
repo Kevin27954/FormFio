@@ -8,9 +8,5 @@ public abstract class FormSubmissionError extends RuntimeException {
     protected FormSubmissionError(String message, Throwable cause) {
         super(message, cause);
     }
-
-    public String getMessage() {
-        return super.getMessage();
-    }
 }
 

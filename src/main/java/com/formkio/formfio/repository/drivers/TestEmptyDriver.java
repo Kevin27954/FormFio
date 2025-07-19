@@ -9,7 +9,21 @@ import java.sql.Statement;
 
 @Profile("notdev")
 @Component
-public class TestEmptyDriver implements DBDriver {
+public class TestEmptyDriver extends DBDriver {
+    @Override
+    public void beginTransaction(){
+
+    }
+
+    @Override
+    public void rollback() throws SQLException {
+
+    }
+
+    @Override
+    public void commit() throws SQLException {
+
+    }
 
     public TestEmptyDriver() {
         System.out.println("testempydriver");

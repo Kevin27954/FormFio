@@ -8,8 +8,7 @@ import java.sql.*;
 
 @Profile("dev")
 @Component
-public class SQLiteDriver implements DBDriver {
-    Connection conn;
+public class SQLiteDriver extends DBDriver {
 
     public SQLiteDriver() throws SQLException {
         String SQLITE_DB_CONN = "jdbc:sqlite:database/sample.db";
@@ -25,6 +24,23 @@ public class SQLiteDriver implements DBDriver {
     @Override
     public Statement createStatement() throws SQLException {
         return conn.createStatement();
+    }
+
+    @Override
+    public void rollback() throws SQLException {
+        conn.rollback();
+    }
+
+    @Override
+    public void beginTransaction() throws SQLException {
+        conn.setAutoCommit(false);
+        this.isTransaction = true;
+    }
+
+    @Override
+    public void commit() throws SQLException {
+        conn.commit();
+        conn.setAutoCommit(true);
     }
 
     @Override

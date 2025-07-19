@@ -1,6 +1,6 @@
 package com.formkio.formfio.model;
 
-import com.formkio.formfio.repository.UserFormRepo;
+import com.formkio.formfio.repository.SubmissionTable;
 
 import java.util.Map;
 
@@ -9,11 +9,11 @@ import java.util.Map;
  */
 
 public class FormSubmissionModel {
-    protected final UserFormRepo userFormRepo;
+    protected final SubmissionTable userFormRepo;
     protected String type;
     protected Map<String, String> formData;
 
-    public FormSubmissionModel(UserFormRepo userFormRepo, String type, Map<String, String> formData) {
+    public FormSubmissionModel(SubmissionTable userFormRepo, String type, Map<String, String> formData) {
         this.userFormRepo = userFormRepo;
         this.type = type;
         this.formData = formData;

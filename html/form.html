@@ -1,0 +1,34 @@
+<html lang="en_us">
+
+<script>
+    function createForm() {
+        const dataToSend = JSON.stringify({"name": "first form", "description": "something here"});
+        let dataReceived = "";
+        fetch("http://localhost:8080/forms/api/create", {
+            method: "post",
+            headers: { "Content-Type": "application/json" },
+            body: dataToSend
+        }).then(resp => {
+            if (resp.status === 200) {
+                console.log("Success")
+            } else {
+                resp.text().then((body) => {
+                    console.log("Message: " + body)
+                });
+                console.log("Status: " + resp.status)
+            }
+        });
+    }
+</script>
+
+<body>
+<form action="http://localhost:8080/submission?test=ABC" method="post">
+    <label>name
+        <input type="text" name="name">
+    </label>
+    <button type="submit">Submit</button>
+
+</form>
+<button onclick="createForm();">Create Form</button>
+</body>
+</html>

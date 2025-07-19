@@ -2,8 +2,7 @@ package com.formkio.formfio.services;
 
 import com.formkio.formfio.model.FormSubmissionModel;
 import com.formkio.formfio.model.WebFormSubmissionModel;
-import com.formkio.formfio.repository.UserFormRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.formkio.formfio.repository.SubmissionTable;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -12,9 +11,9 @@ import java.util.Map;
 @Component
 public class FormSubmissionFactory {
 
-    private final UserFormRepo userFormRepo;
+    private final SubmissionTable userFormRepo;
 
-    public FormSubmissionFactory(UserFormRepo userFormRepo) {
+    public FormSubmissionFactory(SubmissionTable userFormRepo) {
         this.userFormRepo = userFormRepo;
     }
 
