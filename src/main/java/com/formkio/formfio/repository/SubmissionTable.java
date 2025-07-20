@@ -1,8 +1,9 @@
 package com.formkio.formfio.repository;
 
 import com.formkio.formfio.dto.SubmissionDTO;
-import com.formkio.formfio.exceptions.form_submission_errors.FormSubmissionInternalError;
+import com.formkio.formfio.exceptions.FormSubmissionInternalError;
 import com.formkio.formfio.repository.drivers.DBDriver;
+import com.formkio.formfio.repository.interfaces.SubmissionMethods;
 import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package com.formkio.formfio.repository;
+package com.formkio.formfio.repository.interfaces;
 
 import java.sql.SQLException;
 
@@ -6,9 +6,10 @@ public interface EndpointsMethods {
     /**
      *  This should generate a random new id and it should be associated with the
      *  form that it is created for. Once created, it can not be modified.
+     * @param endpoint a uuid v4 string
      * @throws SQLException
      */
-    String createNewEndpoint() throws SQLException;
+    void createNewEndpoint(String endpoint) throws SQLException;
 
     /**
      * Given an endpoint that is associated with an Form, it would be deleted from the

@@ -21,4 +21,8 @@ public abstract class DBDriver {
     public abstract void commit() throws SQLException;
 
     public abstract void close() throws SQLException;
+
+    public boolean isTransaction() {
+        return isTransaction;
+    }
 }

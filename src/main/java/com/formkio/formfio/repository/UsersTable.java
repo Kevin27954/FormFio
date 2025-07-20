@@ -1,6 +1,7 @@
 package com.formkio.formfio.repository;
 
 import com.formkio.formfio.repository.drivers.DBDriver;
+import com.formkio.formfio.repository.interfaces.UsersMethods;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

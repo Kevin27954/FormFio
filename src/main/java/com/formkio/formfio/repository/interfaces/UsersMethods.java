@@ -1,4 +1,4 @@
-package com.formkio.formfio.repository;
+package com.formkio.formfio.repository.interfaces;
 
 import java.sql.SQLException;
 

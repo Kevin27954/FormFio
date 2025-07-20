@@ -4,7 +4,7 @@ import com.formkio.formfio.dto.FormsDTO;
 import com.formkio.formfio.model.UsersModel;
 import com.formkio.formfio.repository.EndpointsTable;
 import com.formkio.formfio.repository.FormsTable;
-import com.formkio.formfio.repository.drivers.DBDriver;
+import com.formkio.formfio.services.FormService;
 import com.formkio.formfio.services.UserService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,13 +19,13 @@ import java.util.Map;
 public class FormController {
 
     UserService userService;
-    FormsTable formsTable;
-    EndpointsTable endpointsTable;
+//    FormsTable formsTable;
+//    EndpointsTable endpointsTable;
+    FormService formService;
 
-    public FormController(UserService userService, FormsTable formsTable, EndpointsTable endpointsTable) {
+    public FormController(UserService userService, FormService formService) {
         this.userService = userService;
-        this.formsTable = formsTable;
-        this.endpointsTable = endpointsTable;
+        this.formService = formService;
     }
 
     // We need to know what kind of user mangaement I am doing but for now,
@@ -36,9 +36,10 @@ public class FormController {
     public String createForm(@RequestBody Map<String, String> data) {
         UsersModel usersModel = userService.getUserInfo();
         // use the form repo to create a new endpoint and form
-        String endpoint = endpointsTable.createNewEndpoint();
-        FormsDTO formsDTO = new FormsDTO(usersModel).parse(data).setEndpoint(endpoint);
-        formsTable.createNewForm(usersModel, formsDTO);
+
+        FormsDTO formsDTO = formService.createFormsDTO(usersModel, data);
+        formService.save(formsDTO);
+
         // return the form creation status & the new api url they will use
         return "success";
     }

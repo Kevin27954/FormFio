@@ -3,8 +3,8 @@ package com.formkio.formfio.services;
 import com.formkio.formfio.exceptions.InternalError;
 import com.formkio.formfio.exceptions.MissingValueError;
 import com.formkio.formfio.exceptions.NotUniqueUUIDError;
-import com.formkio.formfio.exceptions.form_submission_errors.FormSubmissionInternalError;
-import com.formkio.formfio.exceptions.form_submission_errors.NotValidForm;
+import com.formkio.formfio.exceptions.FormSubmissionInternalError;
+import com.formkio.formfio.exceptions.NotValidForm;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,12 +29,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotValidForm.class)
-    public ResponseEntity<Object> handleNotValidForm(NotUniqueUUIDError e) {
+    public ResponseEntity<Object> handleNotValidForm(NotValidForm e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     @ExceptionHandler(InternalError.class)
-    public ResponseEntity<Object> handleInternalError(NotUniqueUUIDError e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    public ResponseEntity<Object> handleInternalError(InternalError e) {
+        return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }

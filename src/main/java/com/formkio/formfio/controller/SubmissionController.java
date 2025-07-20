@@ -1,10 +1,10 @@
 package com.formkio.formfio.controller;
 
 import com.formkio.formfio.dto.SubmissionDTO;
-import com.formkio.formfio.exceptions.form_submission_errors.NotValidForm;
-import com.formkio.formfio.repository.EndpointsTable;
-import com.formkio.formfio.services.FormSubmissionFactory;
+import com.formkio.formfio.exceptions.NotValidForm;
+import com.formkio.formfio.services.FormService;
 import com.formkio.formfio.services.SubmissionService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,31 +15,23 @@ import java.util.Map;
 @RestController
 public class SubmissionController {
 
-    private final FormSubmissionFactory formSubmissionFactory;
-    private final EndpointsTable endpointsTable;
+    private final FormService formService;
     private final SubmissionService submissionService;
 
-    public SubmissionController(FormSubmissionFactory formSubmissionFactory, EndpointsTable endpointsTable, SubmissionService submissionService) {
-        this.formSubmissionFactory = formSubmissionFactory;
-        this.endpointsTable = endpointsTable;
+    public SubmissionController(FormService formService, SubmissionService submissionService) {
+        this.formService = formService;
         this.submissionService = submissionService;
     }
 
-    // So my way of thinking of how form was incorrect. Form can be basically anything.
-    // So I have to accept any fields and not have anything set static.
-    // In the end it would just be me parsing the form and then storing the entire thing as a json.
-    // Nothing else matters. However, it is not certain that it is in json so I have to grab it
-    // first and then convert it into Json.
     @PostMapping(value = "/{endpoint}", consumes = "application/x-www-form-urlencoded")
-    public String acceptSubmission(@PathVariable String endpoint, @RequestParam Map<String, String> formData) {
-        if (endpointsTable.getEndpoint(endpoint)) {
-            throw new NotValidForm("Form endpoint" + endpoint + " is not valid ");
+    public String acceptSubmission(@PathVariable String endpoint, @RequestParam Map<String, String> submission, HttpServletRequest request) {
+        if (!formService.getEndpoint(endpoint)) {
+            throw new NotValidForm("Form endpoint < " + endpoint + " > is not valid.");
         }
 
-        String submissionJson = submissionService.toJson(formData);
-        //  There will be a function to greb the ip addr from the request header
-        String ip_addr = "null";
-        SubmissionDTO submissionDTO = new SubmissionDTO(submissionJson, "web", "", endpoint);
+        String submissionJson = submissionService.toJson(submission);
+        String ip_addr = request.getRemoteAddr();
+        SubmissionDTO submissionDTO = new SubmissionDTO(submissionJson, "web", ip_addr, endpoint);
         submissionService.save(submissionDTO);
 
         return "success";

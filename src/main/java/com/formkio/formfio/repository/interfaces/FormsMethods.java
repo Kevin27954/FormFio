@@ -1,7 +1,6 @@
-package com.formkio.formfio.repository;
+package com.formkio.formfio.repository.interfaces;
 
 import com.formkio.formfio.dto.FormsDTO;
-import com.formkio.formfio.model.UsersModel;
 
 import java.sql.SQLException;
 
@@ -11,10 +10,9 @@ public interface FormsMethods {
      * function
      *
      * @param formsDTO   should contain everything necessary to perform operations
-     * @param usersModel contains information about the login user
      * @throws SQLException
      */
-    void createNewForm(UsersModel usersModel, FormsDTO formsDTO) throws SQLException;
+    void createNewForm(FormsDTO formsDTO) throws SQLException;
 
     /**
      * Deletes a form given the endpoint or the id (not decided yet which one)

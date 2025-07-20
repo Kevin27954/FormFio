@@ -1,21 +1,15 @@
 package com.formkio.formfio.dto;
 
-import com.formkio.formfio.exceptions.MissingValueError;
 import com.formkio.formfio.model.UsersModel;
-
-import java.util.Date;
-import java.util.Map;
 
 public class FormsDTO {
     // Can't be empty
     private String endpoint;
     private UsersModel usersModel;
     private String name;
-    private String description;
 
     // Can be empty
-    private int id;
-    private Date created_date;
+    private String description;
 
     public FormsDTO() {
     }
@@ -24,10 +18,10 @@ public class FormsDTO {
         this.usersModel = usersModel;
     }
 
-    public FormsDTO(UsersModel usersModel, String name, String description) {
+    public FormsDTO(UsersModel usersModel, String name, String endpoint) {
         this.usersModel = usersModel;
         this.name = name;
-        this.description = description;
+        this.endpoint = endpoint;
     }
 
     public UsersModel getUsersModel() {
@@ -58,22 +52,8 @@ public class FormsDTO {
         return endpoint;
     }
 
-    public FormsDTO setEndpoint(String endpoint) {
+    public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
-        return this;
     }
 
-    public FormsDTO parse(Map<String, String> reqBody) throws MissingValueError {
-        try {
-            if(!reqBody.containsKey("name")) {
-                throw new MissingValueError("reqbody did not contain: < name >");
-            }
-            this.setName(reqBody.get("name"));
-            this.setDescription(reqBody.get("description"));
-
-            return this;
-        } catch (Exception e) {
-            throw new MissingValueError("reqbody did not contain: <"+">");
-        }
-    }
 }
