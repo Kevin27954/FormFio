@@ -10,6 +10,8 @@
     const SUPABASE_KEY = 'sb_publishable_jbdgqhGicerTuoX0mcKgxw_Rk66hll7';
     const SUPABASE_URI = 'https://ydtrrhdxfuqtkklhiivh.supabase.co';
 
+    const URI = "http://localhost:8080"
+
     const { createClient } = supabase
 
     // Create a single supabase client for interacting with your database
@@ -21,6 +23,17 @@
           password: 'example-password',
         }).then(({ data, error }) => {
             console.log(data);
+            console.log("error: ", error);
+
+                console.log(JSON.stringify(data.user));
+
+            fetch(`${URI}/register`, {
+                method: "GET",
+                body: JSON.stringify(data.user),
+            }).
+            then((resp) => {
+                console.log(resp);
+            });
         });
     }
 
@@ -40,7 +53,7 @@
 
         token.then(token => {
         // token = "eyJhbGciOiJFUzI1NiIsImtpZCI6ImM1Y2E2MzdkLTEwN2MtNDk0NC05N2YwLWY1YzdiNjQ4ZTRmNiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3lkdHJyaGR4ZnVxdGtrbGhpaXZoLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJmZDRlYjA0Yi04MWNlLTQ3Y2YtODZmZC1kMjZiMDY0MjBlMjgiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzUzMjQyNTE1LCJpYXQiOjE3NTMyMzg5MTUsImVtYWlsIjoia2V2aW5sMzMwNzhAZ21haWwuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6ImtldmlubDMzMDc4QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInN1YiI6ImZkNGViMDRiLTgxY2UtNDdjZi04NmZkLWQyNmIwNjQyMGUyOCJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6InBhc3N3b3JkIiwidGltZXN0YW1wIjoxNzUzMjM4OTE1fV0sInNlc3Npb25faWQiOiJiYThlYWI0Ni0xYzk2LTRiYjMtOWZkNi0xY2U4YzA4MWFhNTAiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.XOq7KjakoGTFIcxhwZRrkdFsJWmFdEVD24sf63p0o4T3HELbwjaR0Wl4DIIBPDGcmLPuG-iGGZzQupEIXL3eHw"
-            fetch("http://localhost:8080/test/user", {
+            fetch(`${URI}/test/user`, {
                 method: "get",
                 headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token},
             }).then(resp => {
