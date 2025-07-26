@@ -1,7 +1,7 @@
 package com.formkio.formfio.repository;
 
 import com.formkio.formfio.dto.SubmissionDTO;
-import com.formkio.formfio.exceptions.FormSubmissionInternalError;
+import com.formkio.formfio.exceptions.FormSubmissionError;
 import com.formkio.formfio.repository.drivers.DBDriver;
 import com.formkio.formfio.repository.interfaces.SubmissionMethods;
 import org.springframework.stereotype.Component;
@@ -37,7 +37,8 @@ public class SubmissionTable implements SubmissionMethods {
             pStmt.setString(4, submissionDTO.getEndpoint());
             pStmt.execute();
         } catch (SQLException e) {
-            throw new FormSubmissionInternalError("");
+            System.out.println("void createNewFormSubmission:" + e);
+            throw new FormSubmissionError("Unable to submit form response. Please try again later.");
         }
     }
 }

@@ -2,11 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Form</title>
+
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.52.0/dist/umd/supabase.min.js" ></script>
-<script >
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.52.0/dist/umd/supabase.min.js"></script>
+<script>
     const SUPABASE_KEY = 'sb_publishable_jbdgqhGicerTuoX0mcKgxw_Rk66hll7';
     const SUPABASE_URI = 'https://ydtrrhdxfuqtkklhiivh.supabase.co';
 
@@ -24,11 +31,10 @@
         }).then(({ data, error }) => {
             console.log(data);
             console.log("error: ", error);
-
-                console.log(JSON.stringify(data.user));
+            console.log(JSON.stringify(data.user));
 
             fetch(`${URI}/register`, {
-                method: "GET",
+                method: "POST",
                 body: JSON.stringify(data.user),
             }).
             then((resp) => {
@@ -87,32 +93,73 @@
         });
     }
 
+    function createForm() {
+        _supabase.auth.getSession().then((data) => {
+            const dataToSend = JSON.stringify({"name": "first form", "description": "something here"});
+            let dataReceived = "";
+            fetch("http://localhost:8080/forms/api/create", {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + data.data.session.access_token
+                },
+                body: dataToSend
+            }).then(resp => {
+                if (resp.status === 200) {
+                    console.log("Success")
+                } else {
+                    resp.text().then((body) => {
+                        console.log("Message: " + body)
+                    });
+                    console.log("Status: " + resp.status)
+                }
+            });
+        });
+
+
+    }
+
 </script>
 
 <body>
-<button onclick="signUp();">
+<button onclick="signUp();" style="background-color:#ef42f5;">
     Sign up with SupaBase
 </button>
 
-<button onclick="logIn();">
+<button onclick="logIn();" style="background-color:#ef42f5;">
     Login
 </button>
 
-<button onclick="logOut();">
+<button onclick="logOut();" style="background-color:#3679e3;">
     LogOut
 </button>
 
-<button onclick="getUserInfo();">
+<button onclick="getUserInfo();" style="background-color:#36e36a;">
     Get User Info from Supa
 </button>
 
-<button onclick="getSessionInfo();">
+<button onclick="getSessionInfo();" style="background-color:#36e36a;">
     Get Session Info from Supa
 </button>
 
-<button onclick="getUser();">
+<button onclick="getUser();" style="background-color:#e3c636;">
     Get User
 </button>
+
+
+<form action="http://localhost:8080/29e07909-7a44-4886-b8c4-86f4eda5ed44?test=ABC" method="post">
+    <!--<form action="https://formspree.io/f/xkgzgyop" method="post">-->
+    <label>name <input type="text" name="name"> </label>
+    <label>password <input type="password" name="password"> </label>
+    <label>number <input type="text" name="number"> </label>
+    <label>email <input type="email" name="email"> </label>
+    <label>text <input type="text" name="text"> </label>
+
+    <label>random nullshit <input type="text" name="random nullshit"> </label>
+    <button type="submit" style="max-width:100px; background-color:#e38a36;">Submit</button>
+
+</form>
+<button onclick="createForm();" style="background-color:#e38a36;">Create Form</button>
 
 </body>
 

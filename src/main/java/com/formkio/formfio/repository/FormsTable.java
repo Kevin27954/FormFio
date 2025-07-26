@@ -22,7 +22,7 @@ public class FormsTable implements FormsMethods {
 
     @Override
     public void createNewForm(FormsDTO formsDTO) throws InternalError {
-        String stmt = INSERT_FORMS + "(user, form_name, description, endpoint) VALUES (?, ?, ?, ?);";
+        String stmt = INSERT_FORMS + "(email, form_name, description, endpoint) VALUES (?, ?, ?, ?);";
         try (PreparedStatement preparedStatement = dbDriver.prepareStatement(stmt)) {
             preparedStatement.setString(1, formsDTO.getUsersModel().getEmail());
             preparedStatement.setString(2, formsDTO.getName());
@@ -30,8 +30,9 @@ public class FormsTable implements FormsMethods {
             preparedStatement.setString(4, formsDTO.getEndpoint());
             preparedStatement.execute();
         } catch (SQLException e) {
-            System.out.println(e);
-            throw new InternalError("Unable to create form. Internal Server Error. Try again later.");
+            // TODO consider better error
+            System.out.println("void createNewForm:" + e);
+            throw new InternalError();
         }
     }
 

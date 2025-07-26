@@ -1,12 +1,33 @@
 package com.formkio.formfio.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.formkio.formfio.model.UsersModel;
+import com.formkio.formfio.services.JSONParserService;
+import com.formkio.formfio.services.UserService;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
+@RestController
 public class UserController {
 
-    @PostMapping("/register")
-    public void registerUser() {
+    private UserService userService;
+    private JSONParserService jsonParserService;
 
+    public UserController(UserService userService, JSONParserService jsonParserService) {
+        this.userService = userService;
+        this.jsonParserService = jsonParserService;
     }
 
+    @PostMapping("/register")
+    @CrossOrigin(value = "*")
+    public void registerUser(@RequestBody String data) {
+        JsonNode user = jsonParserService.parseJson(data);
+
+        UsersModel usersModel = new UsersModel();
+        usersModel.setEmail(user.get("email").toString().replace("\"", ""));
+
+        userService.save(usersModel);
+        // TODO they should be redirected to verify the thing
+    }
 }

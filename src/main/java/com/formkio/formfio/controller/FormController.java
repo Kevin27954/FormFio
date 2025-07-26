@@ -2,16 +2,10 @@ package com.formkio.formfio.controller;
 
 import com.formkio.formfio.dto.FormsDTO;
 import com.formkio.formfio.model.UsersModel;
-import com.formkio.formfio.repository.EndpointsTable;
-import com.formkio.formfio.repository.FormsTable;
 import com.formkio.formfio.services.FormService;
 import com.formkio.formfio.services.UserService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.Map;
 
 @RestController
@@ -19,8 +13,6 @@ import java.util.Map;
 public class FormController {
 
     UserService userService;
-//    FormsTable formsTable;
-//    EndpointsTable endpointsTable;
     FormService formService;
 
     public FormController(UserService userService, FormService formService) {
@@ -33,8 +25,9 @@ public class FormController {
     // Emails are expected to be unique.
     @PostMapping("/forms/api/create")
     @CrossOrigin(value = "*")
-    public String createForm(@RequestBody Map<String, String> data) {
-        UsersModel usersModel = userService.getUserInfo();
+    public String createForm(@RequestHeader Map<String, String> header, @RequestBody Map<String, String> data) {
+        UsersModel usersModel = userService.parseJWT(header.get("authorization"));
+        userService.grabUser(usersModel);
         // use the form repo to create a new endpoint and form
 
         FormsDTO formsDTO = formService.createFormsDTO(usersModel, data);

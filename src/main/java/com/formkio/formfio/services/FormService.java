@@ -42,8 +42,8 @@ public class FormService {
 
             dbDriver.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new InternalError("Unable to save form");
+            System.out.println("void save(FormsDTO):" + e);
+            throw new InternalError();
         }
     }
 
@@ -73,7 +73,7 @@ public class FormService {
 
         formsDTO.setUsersModel(usersModel);
         if (!submission.containsKey("name")) {
-            throw new MissingValueError("form did not contain: < name >");
+            throw new MissingValueError("Form <name> field is required.");
         }
         formsDTO.setName(submission.get("name"));
         formsDTO.setDescription(submission.getOrDefault("description", ""));

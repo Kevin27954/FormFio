@@ -1,5 +1,16 @@
 <html lang="en_us">
 
+<head>
+    <title>Form</title>
+
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
 <script>
     function createForm() {
         const dataToSend = JSON.stringify({"name": "first form", "description": "something here"});
@@ -23,7 +34,7 @@
 
 <body>
 <form action="http://localhost:8080/87690b8a-79de-4e80-b720-0c749fdd7a8e?test=ABC" method="post">
-<!--<form action="https://formspree.io/f/xkgzgyop" method="post">-->
+    <!--<form action="https://formspree.io/f/xkgzgyop" method="post">-->
     <label>name <input type="text" name="name"> </label>
     <label>password <input type="password" name="password"> </label>
     <label>number <input type="text" name="number"> </label>
@@ -36,4 +47,6 @@
 </form>
 <button onclick="createForm();">Create Form</button>
 </body>
+
+
 </html>

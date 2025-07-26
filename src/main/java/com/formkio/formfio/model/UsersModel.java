@@ -8,6 +8,12 @@ public class UsersModel {
     int accountPlan;
     int freeTrail;
 
+    public UsersModel() {
+        this.isReferred = 0;
+        this.accountPlan = 0;
+        this.freeTrail = 0;
+    }
+
     public int getId() {
         return id;
     }

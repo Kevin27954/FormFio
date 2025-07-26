@@ -1,10 +1,7 @@
 package com.formkio.formfio.services;
 
+import com.formkio.formfio.exceptions.*;
 import com.formkio.formfio.exceptions.InternalError;
-import com.formkio.formfio.exceptions.MissingValueError;
-import com.formkio.formfio.exceptions.NotUniqueUUIDError;
-import com.formkio.formfio.exceptions.FormSubmissionInternalError;
-import com.formkio.formfio.exceptions.NotValidForm;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,9 +10,29 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(FormSubmissionInternalError.class)
-    public ResponseEntity<Object> handleFormSubmissionInternalError(FormSubmissionInternalError e) {
+    @ExceptionHandler(FormSubmissionError.class)
+    public ResponseEntity<Object> handleFormSubmissionInternalError(FormSubmissionError e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
+    @ExceptionHandler(InternalError.class)
+    public ResponseEntity<Object> handleInternalError(InternalError e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidJWT.class)
+    public ResponseEntity<Object> handleInvalidJWT(InvalidJWT e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(MalformDataError.class)
+    public ResponseEntity<Object> handleMalformDataError(MalformDataError e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(MissingFieldsError.class)
+    public ResponseEntity<Object> handleMissingFieldError(MissingFieldsError e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     @ExceptionHandler(MissingValueError.class)
@@ -33,9 +50,4 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(InternalError.class)
-    public ResponseEntity<Object> handleInternalError(InternalError e) {
-        return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-    }
 }

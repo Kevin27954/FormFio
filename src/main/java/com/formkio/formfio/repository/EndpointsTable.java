@@ -24,9 +24,6 @@ public class EndpointsTable implements EndpointsMethods {
 
     @Override
     public void createNewEndpoint(String endpoint) throws NotUniqueUUIDError {
-        // There will be a time when I need to write a quick function
-        // to check if it is unique and retry until it is.
-
         String stmt = INSERT_ENDPOINT + "(endpoint) VALUES (?);";
         try (PreparedStatement preparedStatement = dbDriver.prepareStatement(stmt)) {
             preparedStatement.setString(1, endpoint);
@@ -50,8 +47,9 @@ public class EndpointsTable implements EndpointsMethods {
             ResultSet result = pStmt.executeQuery();
             return result.next();
         } catch (SQLException e) {
+            // TODO consider better error
             System.out.println("boolean getEndpoint(): " + e);
-            throw new InternalError("Unable to fetch endpoint from table");
+            throw new InternalError();
         }
     }
 }
