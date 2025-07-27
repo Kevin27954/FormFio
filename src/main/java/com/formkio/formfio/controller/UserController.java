@@ -11,6 +11,7 @@ import java.util.Map;
 @RestController
 public class UserController {
 
+
     private UserService userService;
     private JSONParserService jsonParserService;
 
@@ -19,6 +20,7 @@ public class UserController {
         this.jsonParserService = jsonParserService;
     }
 
+    // Will be the website in the future for cross origin.
     @PostMapping("/register")
     @CrossOrigin(value = "*")
     public void registerUser(@RequestBody String data) {

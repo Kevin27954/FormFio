@@ -20,9 +20,8 @@ public class FormController {
         this.formService = formService;
     }
 
-    // We need to know what kind of user mangaement I am doing but for now,
-    // Assume that it is just a basic one. We just use basic shit like default values
-    // Emails are expected to be unique.
+
+    // CrossOrigin will be the frontend website in the future
     @PostMapping("/forms/api/create")
     @CrossOrigin(value = "*")
     public String createForm(@RequestHeader Map<String, String> header, @RequestBody Map<String, String> data) {
