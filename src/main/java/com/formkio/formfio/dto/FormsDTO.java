@@ -1,15 +1,15 @@
 package com.formkio.formfio.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.formkio.formfio.model.UsersModel;
 
 public class FormsDTO {
-    // Can't be empty
-    private String endpoint;
+    @JsonIgnore
     private UsersModel usersModel;
-    private String name;
 
-    // Can be empty
-    private String description;
+    public String endpoint;
+    public String formName;
+    public String description;
 
     public FormsDTO() {
     }
@@ -18,9 +18,9 @@ public class FormsDTO {
         this.usersModel = usersModel;
     }
 
-    public FormsDTO(UsersModel usersModel, String name, String endpoint) {
+    public FormsDTO(UsersModel usersModel, String formName, String endpoint) {
         this.usersModel = usersModel;
-        this.name = name;
+        this.formName = formName;
         this.endpoint = endpoint;
     }
 
@@ -32,12 +32,12 @@ public class FormsDTO {
         this.usersModel = usersModel;
     }
 
-    public String getName() {
-        return name;
+    public String getFormName() {
+        return formName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFormName(String formName) {
+        this.formName = formName;
     }
 
     public String getDescription() {

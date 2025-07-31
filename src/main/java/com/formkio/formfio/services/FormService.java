@@ -12,6 +12,7 @@ import com.formkio.formfio.repository.drivers.DBDriver;
 import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,21 +22,24 @@ public class FormService {
     DBDriver dbDriver;
     EndpointsTable endpointsTable;
     FormsTable formsTable;
+    RateLimiterService rateLimiterService;
 
-    public FormService(DBDriver dbDriver, EndpointsTable endpointsTable, FormsTable formsTable) {
+    public FormService(DBDriver dbDriver, EndpointsTable endpointsTable, FormsTable formsTable, RateLimiterService rateLimiterService) {
         this.dbDriver = dbDriver;
         this.endpointsTable = endpointsTable;
         this.formsTable = formsTable;
+        this.rateLimiterService = rateLimiterService;
     }
 
     public void save(FormsDTO formsDTO) {
         try {
             dbDriver.beginTransaction();
 
+            String endpoint = createEndpoint();
+            formsDTO.setEndpoint(endpoint);
             try {
-                String endpoint = createEndpoint();
-                formsDTO.setEndpoint(endpoint);
                 this.formsTable.createNewForm(formsDTO);
+                rateLimiterService.addNewForm(endpoint);
             } catch (FormError e) {
                 dbDriver.rollback();
             }
@@ -43,6 +47,16 @@ public class FormService {
             dbDriver.commit();
         } catch (SQLException e) {
             System.out.println("void save(FormsDTO):" + e);
+            throw new InternalError();
+        }
+    }
+
+    public List<FormsDTO> getForm(UsersModel usersModel) {
+        try {
+            return this.formsTable.getForms(usersModel);
+        } catch (SQLException e) {
+            // TODO consider better error
+            System.out.println("List<FormsDTO> getForms formService: " + e);
             throw new InternalError();
         }
     }
@@ -75,7 +89,7 @@ public class FormService {
         if (!submission.containsKey("name")) {
             throw new MissingValueError("Form <name> field is required.");
         }
-        formsDTO.setName(submission.get("name"));
+        formsDTO.setFormName(submission.get("name"));
         formsDTO.setDescription(submission.getOrDefault("description", ""));
 
         return formsDTO;

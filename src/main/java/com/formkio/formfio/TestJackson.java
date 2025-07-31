@@ -19,5 +19,26 @@ public class TestJackson {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonMap = objectMapper.writeValueAsString(map);
         System.out.println(jsonMap);
+
+
+        Test test = new Test();
+        ObjectMapper objectMapper1 = new ObjectMapper();
+        System.out.println(objectMapper1.writeValueAsString(test));
+    }
+
+
+    static class Test {
+        public String field1;
+        public String field2;
+        public String field3;
+        public String field4;
+
+        public Test() {
+            this.field1 = "field1";
+            this.field2 = "field2";
+            this.field3 = "field3";
+            this.field4 = "field4";
+        }
+
     }
 }

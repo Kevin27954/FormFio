@@ -32,14 +32,14 @@ import java.util.Map;
 public class UserService {
 
     private UsersTable usersTable;
-    private JSONParserService jsonParserService;
+    private JSONService jsonParserService;
 
     @Value("${spring.jwk.uri}")
     private String JWK;
 
-    public UserService(UsersTable usersTable, JSONParserService jsonParserService) {
+    public UserService(UsersTable usersTable, JSONService jsonService) {
         this.usersTable = usersTable;
-        this.jsonParserService = jsonParserService;
+        this.jsonParserService = jsonService;
     }
 
     /**
@@ -77,12 +77,10 @@ public class UserService {
         try {
             JWSVerifier verifier = new ECDSAVerifier(getVerifier());
             boolean isVerified = verifier.verify(signedJWT.getHeader(), signedJWT.getSigningInput(), signedJWT.getSignature());
-            System.out.println(isVerified);
 
             if (isVerified) {
                 Payload payload = signedJWT.getPayload();
                 Map<String, Object> user = payload.toJSONObject();
-                System.out.println(user);
             }
         } catch (JOSEException e) {
             // TODO get better error
@@ -90,7 +88,6 @@ public class UserService {
             throw new InternalError();
         }
 
-        System.out.println(signedJWT.getPayload().toJSONObject().toString());
         Map<String, Object> userData = signedJWT.getPayload().toJSONObject();
         UsersModel usersModel = new UsersModel();
         usersModel.setEmail(userData.get("email").toString());

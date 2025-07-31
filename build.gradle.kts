@@ -25,7 +25,7 @@ dependencies {
     implementation("org.xerial:sqlite-jdbc:3.50.2.0")
     implementation("com.nimbusds:nimbus-jose-jwt:10.3")
     implementation("com.fasterxml.jackson.core:jackson-core:2.19.0")
-
+    implementation("redis.clients:jedis:6.0.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

@@ -7,14 +7,15 @@ import com.formkio.formfio.exceptions.MalformDataError;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JSONParserService {
+public class JSONService {
 
-    public JSONParserService() {
+    public JSONService() {
 
     }
 
     /**
      * Given a JSON string representation, a parsed JsonObject of the string is returned.
+     *
      * @param data
      * @return JsonObject
      */
@@ -26,5 +27,17 @@ public class JSONParserService {
             System.out.println("JsonNode parseJson(): " + e);
             throw new MalformDataError("Malformed JSON data.");
         }
+    }
+
+
+    public String toJson(Object any) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(any);
+        } catch (JsonProcessingException e) {
+            System.out.println("String toJson(Object): " + e);
+            throw new MalformDataError("Unable to convert to JSON");
+        }
+
     }
 }

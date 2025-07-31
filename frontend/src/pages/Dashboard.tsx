@@ -75,11 +75,16 @@ function Dashboard() {
                     <CardDescription>Card Description</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    {formData.map((element) => {
-                        return (
-                            <Link to={`/auth/${element.endpoint}`}> {element.endpoint}</Link>
-                        );
-                    }) || <p>No endpoints</p>}
+                    <div className="flex items-center space-x-2 flex-row">
+                        {formData.map((element) => {
+                            return (
+                                <Link to={`/auth/${element.endpoint}`}>
+                                    {" "}
+                                    {element.endpoint}
+                                </Link>
+                            );
+                        }) || <p>No endpoints</p>}
+                    </div>
                 </CardContent>
             </Card>
         </>

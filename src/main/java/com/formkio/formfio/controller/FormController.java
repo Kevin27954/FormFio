@@ -3,10 +3,15 @@ package com.formkio.formfio.controller;
 import com.formkio.formfio.dto.FormsDTO;
 import com.formkio.formfio.model.UsersModel;
 import com.formkio.formfio.services.FormService;
+import com.formkio.formfio.services.JSONService;
+import com.formkio.formfio.services.RateLimiterService;
 import com.formkio.formfio.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 // This is here for dev since i was writing to things on a file.
@@ -14,16 +19,18 @@ public class FormController {
 
     UserService userService;
     FormService formService;
+    JSONService jsonService;
 
-    public FormController(UserService userService, FormService formService) {
+    public FormController(UserService userService, FormService formService, JSONService jsonService) {
         this.userService = userService;
         this.formService = formService;
+        this.jsonService = jsonService;
     }
 
 
     // CrossOrigin will be the frontend website in the future
     @PostMapping("/forms/api/create")
-    @CrossOrigin(value = "*")
+    @CrossOrigin(value = "http://localhost:5173")
     public String createForm(@RequestHeader Map<String, String> header, @RequestBody Map<String, String> data) {
         UsersModel usersModel = userService.parseJWT(header.get("authorization"));
         userService.grabUser(usersModel);
@@ -36,4 +43,15 @@ public class FormController {
         return "success";
     }
 
+    @GetMapping("forms/api/get")
+    @CrossOrigin(value = "http://localhost:5173")
+    public Set<String> getForm(@RequestHeader Map<String, String> header) {
+        UsersModel usersModel = userService.parseJWT(header.get("authorization"));
+        userService.grabUser(usersModel);
+
+        List<FormsDTO> formsDTOS = formService.getForm(usersModel);
+        return Collections.singleton(jsonService.toJson(formsDTOS));
+    }
+
 }
+
