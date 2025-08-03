@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 @Component
 public class UsersTable implements UsersMethods {
@@ -26,7 +27,8 @@ public class UsersTable implements UsersMethods {
             pStmt.setString(1, usersModel.getEmail());
             pStmt.setInt(2, usersModel.getAccountPlan());
             pStmt.setInt(3, usersModel.getIsReferred());
-            pStmt.setInt(4, usersModel.getFreeTrail());
+//            pStmt.setInt(4, usersModel.getFreeTrail());
+            pStmt.setTimestamp(4, Timestamp.valueOf(usersModel.getFreeTrial()));
             pStmt.execute();
         } catch (SQLException e) {
             System.out.println("void createNewUser" + e);

@@ -1,17 +1,22 @@
 package com.formkio.formfio.model;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Calendar;
+
 public class UsersModel {
     // Just use default shit, no need for @Entity and the likes bb.
     int id;
     String email;
     int isReferred;
     int accountPlan;
-    int freeTrail;
+    LocalDateTime freeTrial;
 
     public UsersModel() {
         this.isReferred = 0;
         this.accountPlan = 0;
-        this.freeTrail = 0;
+        this.freeTrial = LocalDateTime.now().atZone(ZoneId.of("UTC")).toLocalDateTime();
     }
 
     public int getId() {
@@ -46,12 +51,12 @@ public class UsersModel {
         this.accountPlan = accountPlan;
     }
 
-    public int getFreeTrail() {
-        return freeTrail;
+    public LocalDateTime getFreeTrial() {
+        return freeTrial;
     }
 
-    public void setFreeTrail(int freeTrail) {
-        this.freeTrail = freeTrail;
+    public void setFreeTrial(LocalDateTime freeTrial) {
+        this.freeTrial = freeTrial;
     }
 
     @Override
@@ -61,7 +66,7 @@ public class UsersModel {
                 ", email='" + email + '\'' +
                 ", isReferred=" + isReferred +
                 ", accountPlan=" + accountPlan +
-                ", freeTrail=" + freeTrail +
+                ", freeTrial=" + freeTrial +
                 '}';
     }
 }
