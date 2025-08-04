@@ -1,15 +1,14 @@
 package com.formkio.formfio.repository.drivers;
 
-import org.springframework.context.annotation.Profile;
+import jakarta.annotation.PreDestroy;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
 
-@Profile("prod")
 @Component
-public class PostgreSQLDriver extends DBDriver {
+public class SQLDriver extends DBDriver {
 
-    public PostgreSQLDriver(Connection postgres) {
+    public SQLDriver(Connection postgres) {
         this.conn = postgres;
     }
 
@@ -36,8 +35,10 @@ public class PostgreSQLDriver extends DBDriver {
     @Override
     public void commit() throws SQLException {
         conn.commit();
+        conn.setAutoCommit(true);
     }
 
+    @PreDestroy
     @Override
     public void close() throws SQLException {
         conn.close();

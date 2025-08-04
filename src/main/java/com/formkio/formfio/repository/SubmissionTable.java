@@ -23,11 +23,6 @@ public class SubmissionTable implements SubmissionMethods {
     }
 
     @Override
-    public List<String> getFields(String formId) {
-        return Arrays.asList("name", "password");
-    }
-
-    @Override
     public void createNewFormSubmission(SubmissionDTO submissionDTO) {
         String stmt = INSERT_SUBMISSION + "(data, source, ip_addr, endpoint) VALUES(?,?,?,?);";
         try(PreparedStatement pStmt = dbDriver.prepareStatement(stmt)) {

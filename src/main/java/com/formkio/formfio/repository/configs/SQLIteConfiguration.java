@@ -1,6 +1,5 @@
 package com.formkio.formfio.repository.configs;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -9,14 +8,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-@Profile("prod")
+@Profile("dev")
 @Configuration
-public class SupabaseConfiguration {
+public class SQLIteConfiguration {
 
     @Bean
-    public Connection initConnection(@Value("${spring.prod.sql}") String uri) throws SQLException {
-        System.out.println("I'm connected to supabase");
-        return DriverManager.getConnection(uri);
+    public Connection initConnection() throws SQLException {
+        System.out.println("I'm connected to SQLite");
+        return DriverManager.getConnection("jdbc:sqlite:database/sample.db");
     }
-
 }

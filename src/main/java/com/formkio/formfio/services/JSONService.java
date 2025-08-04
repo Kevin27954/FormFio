@@ -30,7 +30,7 @@ public class JSONService {
     }
 
 
-    public String toJson(Object any) {
+    public String jsonStringify(Object any) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(any);

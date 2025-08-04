@@ -19,7 +19,7 @@ public class UserController {
 
     // Will be the website in the future for cross origin.
     @PostMapping("/register")
-    @CrossOrigin(value = "http://localhost:5173")
+    @CrossOrigin(value = "${dev.server}")
     public void registerUser(@RequestBody String data) {
         JsonNode user = jsonService.parseJson(data);
 

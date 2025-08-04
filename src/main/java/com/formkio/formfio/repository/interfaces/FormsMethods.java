@@ -10,7 +10,6 @@ public interface FormsMethods {
     /**
      * Creates a completely brand new form. An endpoint must be created first before running this
      * function
-     *
      * @param formsDTO should contain everything necessary to perform operations
      * @throws SQLException
      */
@@ -18,14 +17,12 @@ public interface FormsMethods {
 
     /**
      * Grabs all the form information associated with the User.
-     *
      * @throws SQLException
      */
     List<FormsDTO> getForms(UsersModel usersModel) throws SQLException;
 
     /**
      * Deletes a form given the endpoint or the id (not decided yet which one)
-     *
      * @throws SQLException
      */
     void deleteForm() throws SQLException;

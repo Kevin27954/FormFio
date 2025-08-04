@@ -5,6 +5,10 @@ import com.formkio.formfio.dto.SubmissionDTO;
 import java.util.List;
 
 public interface SubmissionMethods {
-    List<String> getFields(String formId);
+    /**
+     * This creates a new form submission given a submissionDTO
+     * It is best that all fields be filled.
+     * @param submissionDTO
+     */
     void createNewFormSubmission(SubmissionDTO submissionDTO) ;
 }

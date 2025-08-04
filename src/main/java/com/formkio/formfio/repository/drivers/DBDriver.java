@@ -22,7 +22,4 @@ public abstract class DBDriver {
 
     public abstract void close() throws SQLException;
 
-    public boolean isTransaction() {
-        return isTransaction;
-    }
 }
