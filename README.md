@@ -38,3 +38,21 @@ Converter
 ===
 Just a way for you to convert one data into another.
 Need to look more into it.
+
+Redis
+===
+So Redis, we use Jedis. It is similar to all the other databases, 
+- Make sure you start the Redis instance
+- Figure out how to get a connection
+- Figure out if you need a pool or a single connection
+- Use the connection to then call the ability that the database has (select, get, mutli, etc whatever)
+
+Now on to the usage of redis:
+The `key` part is making sure the key that we use is good and unique and easily recreateable. You create
+the key yourself and that is the way to get information on the key.
+In this project we are following the **window limiter**, where we allow the key to live for a window (read: duration)
+We also want to make sure that it is **transactional** so any future potential where the key is read before
+update occurs doesn't happen. This is done by using: `multi` and `exec`.
+`mutli` is basically doing the `setAutoCommit(false)` in **SQL** and telling that it is transaction from now on.
+`commit` is basically doing the `setAutoCommit(true)` && `commit()` in **SQL**.
+
