@@ -14,7 +14,11 @@ class SupabaseAuth {
   }
 
   async signUpPassword(email: string, password: string) {
-    const { user, session, error } = await this.client.signUp({
+    const {
+      user,
+      session: _session,
+      error,
+    } = await this.client.signUp({
       email: email,
       password: password,
     });
@@ -49,6 +53,7 @@ class SupabaseAuth {
       // TODO implement
       console.log("Redirect to LOGIN page");
       redirect("/");
+      return;
     }
     return session.access_token;
   }

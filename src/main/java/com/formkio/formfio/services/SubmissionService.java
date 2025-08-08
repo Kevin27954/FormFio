@@ -3,10 +3,12 @@ package com.formkio.formfio.services;
 import com.formkio.formfio.dto.SubmissionDTO;
 import com.formkio.formfio.exceptions.FormSubmissionError;
 import com.formkio.formfio.exceptions.LimitPassedError;
+import com.formkio.formfio.model.SubmissionsModel;
 import com.formkio.formfio.repository.SubmissionTable;
 import com.formkio.formfio.repository.drivers.DBDriver;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -33,9 +35,9 @@ public class SubmissionService {
         return null;
     }
 
-    public void save(SubmissionDTO submissionDTO) throws FormSubmissionError {
+    public void save(SubmissionsModel submissionsModel) throws FormSubmissionError {
         // Extra logic here if needed
-        submissionTable.createNewFormSubmission(submissionDTO);
+        submissionTable.createNewFormSubmission(submissionsModel);
     }
 
     public void processSubmission(String endpoint, Map<String,String> submission, String ipAddr) {
@@ -47,7 +49,17 @@ public class SubmissionService {
         this.emailService.sendEmail();
 
         String submissionJson = jsonService.jsonStringify(submission);
-        SubmissionDTO submissionDTO = new SubmissionDTO(submissionJson, "web", ipAddr, endpoint);
+        SubmissionsModel submissionDTO = new SubmissionsModel(submissionJson, "web", ipAddr, endpoint);
         save(submissionDTO);
+    }
+
+
+    public List<SubmissionDTO> getSubmissions(String endpoint, Map<String, String> params) {
+        int page;
+        String sortBy;
+
+        page = Integer.parseInt(params.getOrDefault("page", "0"));
+
+        return this.submissionTable.getFormSubmissions(endpoint);
     }
 }

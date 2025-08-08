@@ -5,6 +5,7 @@ import com.formkio.formfio.model.UsersModel;
 import com.formkio.formfio.services.FormService;
 import com.formkio.formfio.services.JSONService;
 import com.formkio.formfio.services.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -26,6 +27,14 @@ public class FormController {
         this.jsonService = jsonService;
     }
 
+    @Value("${dev.server}") String devSer;
+    @GetMapping("/forms/test")
+    @CrossOrigin(origins = "*")
+    public String test() {
+        System.out.println(devSer);
+
+        return "you reached me";
+    }
 
     // CrossOrigin will be the frontend website in the future
     @PostMapping("/forms/api/create")

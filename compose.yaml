@@ -1,0 +1,30 @@
+services:
+  backend:
+    build: ./
+#    ports:
+#      - "8080:8080"
+    env_file:
+      - .env
+    # REMOVE THE LINE BELOW BEFORE DEPLOYING
+    network_mode: host
+#    depends_on:
+#      - database
+    dns:
+      - 8.8.8.8
+#    extra_hosts:
+#      # on Docker 20.10.0+ this resolves host.docker.internal to the host gateway
+#      - "host.docker.internal:host-gateway"
+
+  database:
+    image: redis:8.0.3-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/redis_users.acl:/usr/local/etc/redis/redis_users.acl:ro
+    command: [ "redis-server", "--aclfile", "/usr/local/etc/redis/redis_users.acl" ]
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"

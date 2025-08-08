@@ -7,8 +7,8 @@ import { toast } from "sonner";
 function SignIn() {
     const auth = SupabaseAuth;
 
-    const user = useRef(null);
-    const pass = useRef(null);
+    const user = useRef<HTMLInputElement>(null);
+    const pass = useRef<HTMLInputElement>(null);
 
     async function handleClick() {
         if (user.current === null || pass.current === null) {
