@@ -56,3 +56,28 @@ update occurs doesn't happen. This is done by using: `multi` and `exec`.
 `mutli` is basically doing the `setAutoCommit(false)` in **SQL** and telling that it is transaction from now on.
 `commit` is basically doing the `setAutoCommit(true)` && `commit()` in **SQL**.
 
+Docker
+===
+So for docker, building on top of what I already knew, something that took me quite a while to figure out was
+the problem of ip addresses. In docker, apparently, the default is ipv4 and you have to manually chnage it to
+ipv6 (if the url is ipv6). The only reason I was able to tell was due to the cmd `nc -vz <url> <port>` and thanks
+to AI suggesting that. But in the end, I basically had to arrive at the solution myself. 
+In the future, whenever I see something about connection errors, I should assume immediately it's one of the followings:
+- ipv4 vs ipv6 error
+- typo
+- wrong url being used
+- application is **ONLY** using ipv4
+
+The last point above is due to the fact that I was suggested to add the flag `-Djava.net.preferIPv4Stack=true` during
+my malding session of trying to solve this. In these scenarios, I should try to make it **accept ipv6** or find the
+ipv4 version of it.
+> Honestly I feel like making it accept ipv6 is smarter since that is the new thing that we are trying to move to. 
+
+In the end, I just simply move the application into a custom network that allows ipv6 connections.
+`
+networks:
+formfio-network:
+enable_ipv6: true
+`
+
+> WOW so good AI, but It definitely did help in reaching to the soltion.
