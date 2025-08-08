@@ -1,4 +1,4 @@
-FROM openjdk:21
+FROM openjdk:21-jdk
 LABEL authors="kevinliu"
 
 # RUN addgroup -S formfio && adduser -S formfio -G formfio
