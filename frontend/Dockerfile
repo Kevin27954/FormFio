@@ -1,20 +1,25 @@
-FROM node:21 AS build
+FROM node:21 AS base
 
 # Install build dependencies for native modules
 LABEL authors="kevinliu"
 WORKDIR /usr/app
 
-FROM build AS install
-RUN mkdir -p /temp/prod
-COPY package.json /temp/prod/
-RUN cd /temp/prod && npm install
+FROM base AS install
+COPY package.json ./
+RUN npm install
 
-FROM build AS prerelease
-COPY --from=install /temp/prod/node_modules node_modules
+FROM base AS source
+COPY --from=install /usr/app/node_modules node_modules
 COPY . .
+
+FROM source as dev
+EXPOSE 5173
+CMD ["npm", "run", "dev", "--", "--host"]
+
+FROM source AS build
 RUN npm run build
 
-FROM nginx:stable-alpine AS production
-COPY --from=prerelease /usr/app/dist /usr/share/nginx/html
+FROM nginx:stable-alpine AS prod
+COPY --from=build /usr/app/dist /usr/share/nginx/html
 EXPOSE 80
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

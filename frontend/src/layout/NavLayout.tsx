@@ -26,6 +26,11 @@ function NavLayout() {
                             <Link to="/auth/dashboard">Dashboard</Link>
                         </NavigationMenuLink>
                     </NavigationMenuItem>
+                    <NavigationMenuItem>
+                        <NavigationMenuLink asChild>
+                            <Link to="/auth/plans">Plans</Link>
+                        </NavigationMenuLink>
+                    </NavigationMenuItem>
                 </NavigationMenuList>
             </NavigationMenu>
             <Outlet />

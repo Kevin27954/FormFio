@@ -8,10 +8,8 @@ import com.formkio.formfio.services.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @RestController
 // This is here for dev since i was writing to things on a file.
@@ -28,17 +26,18 @@ public class FormController {
     }
 
     @Value("${dev.server}") String devSer;
+
     @GetMapping("/forms/test")
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(value = "*")
     public String test() {
         System.out.println(devSer);
 
-        return "you reached me";
+        return "you reached me and nd I changed a little again uwu";
     }
 
     // CrossOrigin will be the frontend website in the future
     @PostMapping("/forms/api/create")
-    @CrossOrigin(value = "${dev.server}")
+//    @CrossOrigin(value = "${dev.server}")
     public String createForm(@RequestHeader Map<String, String> header, @RequestBody Map<String, String> data) {
         UsersModel usersModel = userService.parseJWT(header.get("authorization"));
         userService.grabUser(usersModel);
@@ -51,14 +50,13 @@ public class FormController {
         return "success";
     }
 
-    @GetMapping("forms/api/get")
-    @CrossOrigin(value = "${dev.server}")
-    public Set<String> getForm(@RequestHeader Map<String, String> header) {
+    @GetMapping("/forms/api/get")
+//    @CrossOrigin(value = "${dev.server}")
+    public List<FormsDTO> getForm(@RequestHeader Map<String, String> header) {
         UsersModel usersModel = userService.parseJWT(header.get("authorization"));
         userService.grabUser(usersModel);
 
-        List<FormsDTO> formsDTOS = formService.getForm(usersModel);
-        return Collections.singleton(jsonService.jsonStringify(formsDTOS));
+        return formService.getForm(usersModel);
     }
 
 }

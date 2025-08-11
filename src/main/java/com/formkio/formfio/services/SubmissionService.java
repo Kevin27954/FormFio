@@ -6,12 +6,12 @@ import com.formkio.formfio.exceptions.LimitPassedError;
 import com.formkio.formfio.model.SubmissionsModel;
 import com.formkio.formfio.repository.SubmissionTable;
 import com.formkio.formfio.repository.drivers.DBDriver;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Service
 public class SubmissionService {
 
     private DBDriver dbDriver;

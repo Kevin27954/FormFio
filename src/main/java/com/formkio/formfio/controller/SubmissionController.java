@@ -40,15 +40,14 @@ public class SubmissionController {
         return "success";
     }
 
-    @GetMapping(value="/{endpoint}")
+    @GetMapping(value = "/{endpoint}")
     @CrossOrigin(value = "${dev.server}")
-    public String getSubmissions(@PathVariable String endpoint, @RequestParam Map<String, String> params) {
+    public List<SubmissionDTO> getSubmissions(@PathVariable String endpoint, @RequestParam Map<String, String> params) {
         if (!formService.getEndpoint(endpoint)) {
             throw new NotValidForm("Form endpoint < " + endpoint + " > is not valid.");
         }
 
-        List<SubmissionDTO> result = submissionService.getSubmissions(endpoint, params);
-        return jsonService.jsonStringify(result);
+        return submissionService.getSubmissions(endpoint, params);
     }
 
 }

@@ -1,6 +1,7 @@
 
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY,
+    stripe_id TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     account_plan INTEGER DEFAULT 0,
     is_referred INTEGER DEFAULT 0,

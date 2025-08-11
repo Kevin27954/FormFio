@@ -10,6 +10,8 @@ import Dashboard from "./pages/Dashboard.tsx";
 import NavLayout from "./layout/NavLayout.tsx";
 import { Toaster } from "sonner";
 import Endpoint from "./pages/Endpoint.tsx";
+import Plans from "./pages/Plans.tsx";
+import Checkout from "./pages/Checkout.tsx";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +26,8 @@ const router = createBrowserRouter([
             { path: "signup", Component: SignUp },
             { path: "signin", Component: SignIn },
             { path: "dashboard", Component: Dashboard },
+            { path: "plans", Component: Plans },
+            { path: "plans/:plan", Component: Checkout },
             { path: ":endpoint", Component: Endpoint },
         ],
     },

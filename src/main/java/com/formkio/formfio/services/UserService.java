@@ -14,8 +14,9 @@ import com.nimbusds.jose.jwk.ECKey;
 import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.SignedJWT;
+import com.stripe.model.Customer;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,17 +29,19 @@ import java.text.ParseException;
 import java.util.Map;
 
 
-@Component
+@Service
 public class UserService {
 
-    private UsersTable usersTable;
-    private JSONService jsonParserService;
+    private final UsersTable usersTable;
+    private final StripeService stripeService;
+    private final JSONService jsonParserService;
 
     @Value("${spring.jwk.uri}")
     private String JWK;
 
-    public UserService(UsersTable usersTable, JSONService jsonService) {
+    public UserService(UsersTable usersTable, StripeService stripeService, JSONService jsonService) {
         this.usersTable = usersTable;
+        this.stripeService = stripeService;
         this.jsonParserService = jsonService;
     }
 
@@ -53,7 +56,10 @@ public class UserService {
     }
 
     public void save(UsersModel usersModel) {
-        usersTable.createNewUser(usersModel);
+        Customer customer = stripeService.createUser(usersModel);
+        System.out.println(customer.toString());
+
+        usersTable.createNewUser(usersModel, customer);
     }
 
     /**

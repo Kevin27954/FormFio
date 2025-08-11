@@ -1,0 +1,16 @@
+.idea
+.settings
+database
+frontend
+html
+redis
+sqlite3
+
+.classpath
+.gitattributes
+.gitignore
+.project
+
+compose.yaml
+Dockerfile
+README.md

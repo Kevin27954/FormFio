@@ -1,7 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 import type { SupabaseAuthClient } from "@supabase/supabase-js/dist/main/lib/SupabaseAuthClient";
-import getServer from "../util/getserver";
 import { redirect } from "react-router";
+
+import { signUpAPI } from "@/services/users.ts";
 
 const URL = import.meta.env.VITE_SUPABASE_URL;
 const KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -28,14 +29,14 @@ class SupabaseAuth {
       return;
     }
 
-    await fetch(`${getServer()}/register`, {
+    await signUpAPI("/api/users/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "http://localhost:8080",
       },
       body: JSON.stringify(user),
     });
+
     redirect("/auth/verify");
   }
 

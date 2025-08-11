@@ -1,11 +1,11 @@
 package com.formkio.formfio.services;
 
 import com.formkio.formfio.dto.RateDTO;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
-@Component
+@Service
 public class RateLimiterService {
 
     static HashMap<String, RateDTO> redis;

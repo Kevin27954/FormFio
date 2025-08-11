@@ -9,14 +9,14 @@ import com.formkio.formfio.model.UsersModel;
 import com.formkio.formfio.repository.EndpointsTable;
 import com.formkio.formfio.repository.FormsTable;
 import com.formkio.formfio.repository.drivers.DBDriver;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@Component
+@Service
 public class FormService {
 
     DBDriver dbDriver;

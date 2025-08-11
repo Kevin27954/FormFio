@@ -1,7 +1,9 @@
 package com.formkio.formfio.services;
 
 
-import org.springframework.stereotype.Component;
+import com.formkio.formfio.model.UsersModel;
+import com.formkio.formfio.repository.UsersTable;
+import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Transaction;
@@ -18,14 +20,21 @@ import java.util.Date;
  * an example would be:
  * > submission:832-324-32kj-2zc-sadf9:3
  */
-@Component
+@Service
 public class JedisLimiterService {
+
+    private final int FREE_TIER = 50;
+    private final int SOLO_TIER = 500;
+    private final int SMALL_TEAM_TIER = 5000;
+    private final int BUSINESS_TIER = 100000;
 
     private final int DURATION = 12960000;
     private final JedisPool jedisPool;
+    private final UsersTable usersTable;
 
-    public JedisLimiterService(JedisPool jedisPool) {
+    public JedisLimiterService(JedisPool jedisPool, UsersTable usersTable) {
         this.jedisPool = jedisPool;
+        this.usersTable = usersTable;
     }
 
     public boolean isAllowed(String endpoint) {
@@ -39,7 +48,8 @@ public class JedisLimiterService {
         }
         int count = countStr != null ? Integer.parseInt(countStr) : 0;
 
-        boolean isAllowed = count < getLimit(); if (isAllowed) {
+        boolean isAllowed = count < getLimit(endpoint);
+        if (isAllowed) {
             try (Jedis jedis = jedisPool.getResource()) {
                 Transaction trans = jedis.multi();
                 trans.incr(key);
@@ -54,6 +64,7 @@ public class JedisLimiterService {
     /**
      * Calculates the duration from the current time until the start of next month.
      * It rounds the time diff and returns it as a int afterwards.
+     *
      * @return `int` duration
      */
     private int getDuration() {
@@ -80,10 +91,25 @@ public class JedisLimiterService {
      * 2 -> 10,000  monthly submissions
      * 3 -> 100,000 monthly submissions
      * 4 -> Unlimited
+     *
      * @return `int` the limit
      */
-    private int getLimit() {
-        return 5;
+    private int getLimit(String endpoint) {
+        // this is in the limiter service, so we ned the plan of the owner. I'm thinking it owuld be overal limit.
+        // so like they would not be able ot have more than X submissions in total per month across all forms.
+        UsersModel user = usersTable.getUserByEndpoint(endpoint);
+        switch (user.getAccountPlan()){
+            case 0:
+                return FREE_TIER;
+            case 1:
+                return SOLO_TIER;
+            case 2:
+                return SMALL_TEAM_TIER;
+            case 3:
+                return BUSINESS_TIER;
+            default:
+                return 10;
+        }
     }
 
 }
