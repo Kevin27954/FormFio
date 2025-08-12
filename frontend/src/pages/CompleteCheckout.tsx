@@ -1,7 +1,6 @@
 import { fulfillOrder } from "@/services/stripe";
 import { useEffect, useState } from "react";
 import SupabaseAuth from "@/lib/supabase";
-import { Link, useSearchParams } from "react-router";
 
 function CompleteCheckout() {
     const auth = SupabaseAuth;
@@ -28,7 +27,6 @@ function CompleteCheckout() {
 
     return (
         <>
-            <Link to="/auth">Auth Page</Link>
             {sessionId}
 
             <div>
