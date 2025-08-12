@@ -5,10 +5,13 @@ import com.formkio.formfio.model.UsersModel;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
+import com.stripe.model.checkout.Session;
+import com.stripe.net.RequestOptions;
 import com.stripe.param.CustomerCreateParams;
 import com.stripe.param.checkout.SessionCreateParams.LineItem;
 import com.stripe.param.checkout.SessionCreateParams.LineItem.PriceData;
 import com.stripe.param.checkout.SessionCreateParams.LineItem.PriceData.ProductData;
+import com.stripe.param.checkout.SessionRetrieveParams;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,11 +29,28 @@ public class StripeService {
 
     public StripeProductDTO getStripeProductInfo(String product) {
         return switch (product) {
-            case "solo" -> new StripeProductDTO("Solo Tier", 500L);
-            case "team" -> new StripeProductDTO("Small Team Tier", 1500L);
-            case "business" -> new StripeProductDTO("Business Tier", 5000L);
+            case "solo" -> new StripeProductDTO("solo", 500L);
+            case "team" -> new StripeProductDTO("team", 1500L);
+            case "business" -> new StripeProductDTO("business", 5000L);
             default -> throw new RuntimeException("Unknown product");
         };
+    }
+
+    public Session getSessionStatus(String sessionId) {
+        RequestOptions options = RequestOptions.builder().build();
+        SessionRetrieveParams params = SessionRetrieveParams.builder()
+                .addExpand("payment_intent")
+                .addExpand("line_items")
+                .addExpand("line_items.data.price.product")
+                .build();
+
+        try {
+
+            return Session.retrieve(sessionId, params, options);
+        } catch (StripeException e) {
+            // TODO GIVE ME A BETTER ERROR
+            throw new RuntimeException(e);
+        }
     }
 
     public Customer createUser(UsersModel user) {
