@@ -55,6 +55,12 @@ public class UserService {
 
     }
 
+    public void updateAccountPlan(UsersModel usersModel, String plan) {
+        System.out.println(getAccountPlan(plan));
+        usersTable.updateUserAccountPlan(usersModel, getAccountPlan(plan));
+
+    }
+
     public void save(UsersModel usersModel) {
         Customer customer = stripeService.createUser(usersModel);
         System.out.println(customer.toString());
@@ -152,4 +158,18 @@ public class UserService {
         return keys.get(0);
     }
 
+
+    public int getAccountPlan(String plan) {
+        switch (plan.toLowerCase()) {
+            case "solo":
+                return 1;
+            case "team":
+                return 2;
+            case "business":
+                return 3;
+            default:
+                System.out.println("Unknow plan");
+                return 0;
+        }
+    }
 }

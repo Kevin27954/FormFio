@@ -40,14 +40,15 @@ public class UserController {
     public void updateUserEmail(@RequestBody String data) {
         JsonNode stripeData = jsonService.parseJson(data);
 
+        // It should update email across 3 places:
+        // This should never happen though if they are verified.
+        // So SUPABASE can be done in frontend
+        // For STRIPE, I just need to grab the stripe_id, I currently have and update that. This is the backend.
+        // My db, supabase, and stripe
+
+        // Perhaps store a is verified thing in this too?
+
         System.out.println(stripeData.toString());
     }
 
-    @PostMapping("/users/api/update/plan")
-    @CrossOrigin(value = "${dev.server}")
-    public void updateUserPlan(@RequestBody String data) {
-        JsonNode stripeData = jsonService.parseJson(data);
-
-        System.out.println(stripeData.toString());
-    }
 }

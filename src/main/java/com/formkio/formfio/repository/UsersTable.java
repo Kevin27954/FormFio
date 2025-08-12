@@ -16,10 +16,12 @@ import java.sql.Timestamp;
 public class UsersTable implements UsersMethods {
 
     DBDriver dbDriver;
-    private final String INSERT_USER = "INSERT INTO users";
-    private final String SELECT_USER = "SELECT * FROM users";
+    private final String INSERT_USER = "INSERT INTO users ";
+    private final String SELECT_USER = "SELECT * FROM users ";
 
-    private final String SELECT_FORMS = "SELECT * FROM forms";
+    private final String UPDATE_USER = "UPDATE users ";
+
+    private final String SELECT_FORMS = "SELECT * FROM forms ";
 
     public UsersTable(DBDriver dbDriver) {
         this.dbDriver = dbDriver;
@@ -43,7 +45,7 @@ public class UsersTable implements UsersMethods {
 
     @Override
     public UsersModel getUserByEndpoint(String endpoint) {
-        String stmt = SELECT_USER + " JOIN forms ON users.email=forms.email WHERE forms.endpoint = (?);";
+        String stmt = SELECT_USER + "JOIN forms ON users.email=forms.email WHERE forms.endpoint = (?);";
         try (PreparedStatement pStmt = dbDriver.prepareStatement(stmt)) {
             pStmt.setString(1, endpoint);
             ResultSet result = pStmt.executeQuery();
@@ -64,6 +66,19 @@ public class UsersTable implements UsersMethods {
             // TODO Same as the todo above
             System.out.println("UsersModel getUserByEndpoint(String endpoint): " + e);
             throw new InternalError("Unable to find user");
+        }
+    }
+
+
+    public void updateUserAccountPlan(UsersModel usersModel, int plan) {
+        String stmt = UPDATE_USER + "SET account_plan=(?) WHERE email=(?);";
+        try(PreparedStatement pStmt = dbDriver.prepareStatement(stmt)) {
+            pStmt.setInt(1, plan);
+            pStmt.setString(2, usersModel.getEmail());
+            pStmt.execute();
+        } catch (SQLException e) {
+            System.out.println("void updateUserAccountPlan(UsersModel, int): " + e);
+            throw new InternalError("Unable to update user account plan");
         }
     }
 }

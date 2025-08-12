@@ -7,7 +7,7 @@ function CheckoutForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        checkout.updateEmail("example@gmail.com").then((res) => {
+        await checkout.updateEmail("kevinl33078@gmail.com").then((res) => {
             if (res.type === "error") {
                 console.log(res.error);
                 console.log(res);
@@ -26,20 +26,12 @@ function CheckoutForm() {
         }
     };
 
-    const handleClick = () => {
-        checkout.confirm().then((result) => {
-            if (result.type === "error") {
-                console.log(result.error);
-            }
-        });
-    };
-
     return (
         <form onSubmit={handleSubmit}>
             {JSON.stringify(checkout.lineItems, null, 2)}
             Total: {checkout.total.total.amount}
             <PaymentElement />
-            <Button onClick={handleClick}>Submit</Button>
+            <Button>Submit</Button>
         </form>
     );
 }

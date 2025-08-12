@@ -12,6 +12,7 @@ import { Toaster } from "sonner";
 import Endpoint from "./pages/Endpoint.tsx";
 import Plans from "./pages/Plans.tsx";
 import Checkout from "./pages/Checkout.tsx";
+import CompleteCheckout from "./pages/CompleteCheckout.tsx";
 
 const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
             { path: "plans/:plan", Component: Checkout },
             { path: ":endpoint", Component: Endpoint },
         ],
+    },
+    {
+        path: "/complete",
+        Component: CompleteCheckout,
     },
 ]);
 

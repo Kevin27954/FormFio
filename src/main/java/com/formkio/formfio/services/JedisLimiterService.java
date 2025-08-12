@@ -23,6 +23,7 @@ import java.util.Date;
 @Service
 public class JedisLimiterService {
 
+    private final int TEST_USER = 5;
     private final int FREE_TIER = 50;
     private final int SOLO_TIER = 500;
     private final int SMALL_TEAM_TIER = 5000;
@@ -107,6 +108,8 @@ public class JedisLimiterService {
                 return SMALL_TEAM_TIER;
             case 3:
                 return BUSINESS_TIER;
+            case 7:
+                return TEST_USER;
             default:
                 return 10;
         }
