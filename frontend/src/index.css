@@ -4,7 +4,12 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; */
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -50,14 +55,6 @@
   --sidebar-accent-foreground: #10b981;
   --sidebar-border: #e5f3f0;
   --sidebar-ring: #10b981;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 @media (prefers-color-scheme: light) {

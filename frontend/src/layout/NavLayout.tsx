@@ -1,40 +1,14 @@
-import {
-    NavigationMenu,
-    NavigationMenuList,
-    NavigationMenuItem,
-    NavigationMenuLink,
-} from "@/components/ui/navigation-menu";
-import { Link, Outlet } from "react-router";
+import NavMenu from "@/components/NavMenu";
+import { Outlet } from "react-router";
 
 function NavLayout() {
     return (
-        <>
-            <NavigationMenu>
-                <NavigationMenuList>
-                    <NavigationMenuItem>
-                        <NavigationMenuLink asChild>
-                            <Link to="/auth/signup">Sign Up</Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                        <NavigationMenuLink asChild>
-                            <Link to="/auth/signin">Sign In</Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                        <NavigationMenuLink asChild>
-                            <Link to="/auth/dashboard">Dashboard</Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                        <NavigationMenuLink asChild>
-                            <Link to="/auth/plans">Plans</Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuItem>
-                </NavigationMenuList>
-            </NavigationMenu>
-            <Outlet />
-        </>
+        <div className="flex-col w-full">
+            <NavMenu />
+            <main className="flex justify-center items-center m-8">
+                <Outlet />
+            </main>
+        </div>
     );
 }
 

@@ -7,7 +7,7 @@ import { useParams } from "react-router";
 function Endpoint() {
     const params = useParams();
 
-    const url = `${getServer()}/${params.endpoint}`;
+    const url = `/api${getServer()}/${params.endpoint}`;
     //<!--<form action="https://formspree.io/f/xkgzgyop" method="post">-->
     return (
         <>
