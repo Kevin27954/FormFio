@@ -3,13 +3,10 @@ package com.formkio.formfio.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.formkio.formfio.model.UsersModel;
 import com.formkio.formfio.services.JSONService;
-import com.formkio.formfio.services.StripeService;
 import com.formkio.formfio.services.UserService;
-import com.stripe.model.Customer;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -37,8 +34,16 @@ public class UserController {
 
     @PostMapping("/users/api/update/email")
     @CrossOrigin(value = "${dev.server}")
-    public void updateUserEmail(@RequestBody String data) {
-        JsonNode stripeData = jsonService.parseJson(data);
+    public String updateUserEmail(@RequestHeader Map<String, String> header, @RequestBody String body) {
+        JsonNode data = jsonService.parseJson(body);
+        String email = data.get("email").toString().replace("\"", "");
+
+        UsersModel usersModel = userService.parseJWT(header.get("authorization"));
+        userService.grabUser(usersModel);
+
+        userService.updateEmail(usersModel, email);
+
+        return jsonService.jsonStringify("success");
 
         // It should update email across 3 places:
         // This should never happen though if they are verified.
@@ -48,7 +53,6 @@ public class UserController {
 
         // Perhaps store a is verified thing in this too?
 
-        System.out.println(stripeData.toString());
     }
 
 }

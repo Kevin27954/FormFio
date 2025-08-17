@@ -28,6 +28,66 @@ public class UsersTable implements UsersMethods {
     }
 
     @Override
+    public UsersModel getUserByEmail(String email) {
+        String stmt = SELECT_USER + "WHERE email=(?);";
+        try (PreparedStatement pStmt = dbDriver.prepareStatement(stmt)) {
+            pStmt.setString(1, email);
+            ResultSet result = pStmt.executeQuery();
+
+            if (!result.next()) {
+                // TODO give this an actual Error class (Can't find user or something)
+                throw new InternalError("Unable to find user");
+            }
+
+            UsersModel user = new UsersModel();
+            user.setStripeID(result.getString("stripe_id"));
+            user.setEmail(result.getString("email"));
+            user.setIsReferred(result.getInt("is_referred"));
+            user.setAccountPlan(result.getInt("account_plan"));
+            user.setFreeTrial(result.getTimestamp("created_at").toLocalDateTime());
+
+            return user;
+        } catch (SQLException e) {
+            System.out.println("UsersModel grabUserByEmail:" + e);
+            throw new InternalError("Unable to grab by user email. Try again later");
+        }
+    }
+
+    public void getUserByEmail(UsersModel user) {
+        String stmt = SELECT_USER + "WHERE email=(?);";
+        try (PreparedStatement pStmt = dbDriver.prepareStatement(stmt)) {
+            pStmt.setString(1, user.getEmail());
+            ResultSet result = pStmt.executeQuery();
+
+            if (!result.next()) {
+                // TODO give this an actual Error class (Can't find user or something)
+                throw new InternalError("Unable to find user");
+            }
+
+            user.setStripeID(result.getString("stripe_id"));
+            user.setIsReferred(result.getInt("is_referred"));
+            user.setAccountPlan(result.getInt("account_plan"));
+            user.setFreeTrial(result.getTimestamp("created_at").toLocalDateTime());
+        } catch (SQLException e) {
+            System.out.println("UsersModel grabUserByEmail:" + e);
+            throw new InternalError("Unable to grab by user email. Try again later");
+        }
+    }
+
+    @Override
+    public void updateEmail(UsersModel usersModel, String newEmail) {
+        String stmt = UPDATE_USER + "SET email=(?) WHERE email=(?)";
+        try (PreparedStatement pStmt = dbDriver.prepareStatement(stmt)) {
+            pStmt.setString(1, newEmail);
+            pStmt.setString(2, usersModel.getEmail());
+            pStmt.execute();
+        } catch (SQLException e) {
+            System.out.println("void updateEmail:" + e);
+            throw new InternalError("Unable to update user email. Try again later");
+        }
+    }
+
+    @Override
     public void createNewUser(UsersModel usersModel, Customer customer) {
         String stmt = INSERT_USER + "(stripe_id, email, account_plan, is_referred, free_trial) VALUES (?,?,?,?,?);";
         try (PreparedStatement pStmt = dbDriver.prepareStatement(stmt)) {
@@ -56,6 +116,7 @@ public class UsersTable implements UsersMethods {
             }
 
             UsersModel user = new UsersModel();
+            user.setStripeID(result.getString("stripe_id"));
             user.setEmail(result.getString("email"));
             user.setIsReferred(result.getInt("is_referred"));
             user.setAccountPlan(result.getInt("account_plan"));
@@ -72,7 +133,7 @@ public class UsersTable implements UsersMethods {
 
     public void updateUserAccountPlan(UsersModel usersModel, int plan) {
         String stmt = UPDATE_USER + "SET account_plan=(?) WHERE email=(?);";
-        try(PreparedStatement pStmt = dbDriver.prepareStatement(stmt)) {
+        try (PreparedStatement pStmt = dbDriver.prepareStatement(stmt)) {
             pStmt.setInt(1, plan);
             pStmt.setString(2, usersModel.getEmail());
             pStmt.execute();

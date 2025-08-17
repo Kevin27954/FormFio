@@ -8,6 +8,7 @@ import com.stripe.model.Customer;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.RequestOptions;
 import com.stripe.param.CustomerCreateParams;
+import com.stripe.param.CustomerUpdateParams;
 import com.stripe.param.checkout.SessionCreateParams.LineItem;
 import com.stripe.param.checkout.SessionCreateParams.LineItem.PriceData;
 import com.stripe.param.checkout.SessionCreateParams.LineItem.PriceData.ProductData;
@@ -25,6 +26,25 @@ public class StripeService {
     @PostConstruct
     public void init() {
         Stripe.apiKey = secretKey;
+    }
+
+    public void updateUserEmail(String stripeID, String newEmail) {
+        System.out.println(stripeID + " " + newEmail);
+
+        try {
+            Customer resource = Customer.retrieve(stripeID);
+            CustomerUpdateParams params = CustomerUpdateParams.builder()
+                    .setEmail(newEmail)
+                    .setName(newEmail)
+                    .build();
+            Customer customer = resource.update(params);
+            System.out.println(customer.getEmail());
+            System.out.println(customer.getName());
+        } catch (StripeException e) {
+            // TODO GIVE ME A BETTER ERROR
+            System.out.println("void updateUserEmail: " + e);
+            throw new RuntimeException("Unable to get/update stripe customer");
+        }
     }
 
     public StripeProductDTO getStripeProductInfo(String product) {

@@ -8,6 +8,7 @@ import java.util.Calendar;
 public class UsersModel {
     // Just use default shit, no need for @Entity and the likes bb.
     int id;
+    String stripeID;
     String email;
     int isReferred;
     int accountPlan;
@@ -59,10 +60,19 @@ public class UsersModel {
         this.freeTrial = freeTrial;
     }
 
+    public String getStripeID() {
+        return stripeID;
+    }
+
+    public void setStripeID(String stripeID) {
+        this.stripeID = stripeID;
+    }
+
     @Override
     public String toString() {
         return "UsersModel{" +
                 "id=" + id +
+                ", stripeID='" + stripeID + '\'' +
                 ", email='" + email + '\'' +
                 ", isReferred=" + isReferred +
                 ", accountPlan=" + accountPlan +

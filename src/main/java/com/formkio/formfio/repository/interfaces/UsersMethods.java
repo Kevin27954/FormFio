@@ -17,6 +17,14 @@ public interface UsersMethods {
     void createNewUser(UsersModel usersModel, Customer customer) throws SQLException;
 
     /**
+     * Updates the email in the current database.
+     * @param usersModel to serach for current user.
+     * @param newEmail the new email to change into
+     * @throws SQLException
+     */
+    void updateEmail(UsersModel usersModel, String newEmail) throws SQLException;
+
+    /**
      * Grabs the users information given a endpoint associated to the form. This is specifically made for
      * grabbing user information in the JedisLimiterService.
      * @param endpoint
@@ -24,4 +32,13 @@ public interface UsersMethods {
      * @throws SQLException
      */
     UsersModel getUserByEndpoint(String endpoint) throws SQLException;
+
+    /**
+     * Grabs the users information given an email.
+     * @param email
+     * @return UsersModel containing the information about the user
+     * @throws SQLException
+     */
+    UsersModel getUserByEmail(String email) throws SQLException;
+
 }

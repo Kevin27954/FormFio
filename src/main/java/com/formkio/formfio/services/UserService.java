@@ -45,14 +45,21 @@ public class UserService {
         this.jsonParserService = jsonService;
     }
 
+    public void updateEmail(UsersModel usersModel, String newEmail) {
+        UsersModel user = usersTable.getUserByEmail(usersModel.getEmail());
+        usersTable.updateEmail(usersModel, newEmail);
+        System.out.println(user.getStripeID());
+        stripeService.updateUserEmail(user.getStripeID(), newEmail);
+    }
+
     /**
-     * Given a users model, it will fill the information of the user in the
+     * Given a users model with only the email, it will fill the information of the user in the
      * SQL database into the usersModel.
      *
      * @param usersModel
      */
     public void grabUser(UsersModel usersModel) {
-
+        usersTable.getUserByEmail(usersModel);
     }
 
     public void updateAccountPlan(UsersModel usersModel, String plan) {
