@@ -12,6 +12,11 @@ class SupabaseAuth {
 
   constructor() {
     this.client = createClient(URL, KEY).auth;
+    // this.client.refreshSession();
+  }
+
+  getUserInfo() {
+    return this.client.user();
   }
 
   async signUpPassword(email: string, password: string) {
@@ -55,6 +60,14 @@ class SupabaseAuth {
     }
     return session.access_token;
   }
+
+  async changeEmail(newEmail: string) {
+    await this.client.update({ email: newEmail });
+  }
 }
 
-export default new SupabaseAuth();
+function initSupabaseAuth() {
+  return new SupabaseAuth();
+}
+
+export default initSupabaseAuth;

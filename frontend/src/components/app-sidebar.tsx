@@ -29,6 +29,7 @@ import { createFormAPI } from "@/services/forms";
 import { toast } from "sonner";
 import type { FormDTO } from "@/types/forms";
 import { SubmissionContext } from "@/hooks/submission-context";
+import { Link } from "react-router";
 
 const sideActBtn =
     "border-r-primary border-r-5 text-primary font-bold bg-primary/30";
@@ -61,7 +62,7 @@ function AppSideBar({ className }: React.ComponentProps<typeof Sidebar>) {
 
     return (
         <Sidebar className={className} collapsible="none">
-            <SidebarContent>
+            <SidebarContent className="border-r-primary/40 border-r-1">
                 <SidebarGroup className="h-full">
                     <SidebarHeader>
                         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -100,16 +101,18 @@ function AppSideBar({ className }: React.ComponentProps<typeof Sidebar>) {
                                 : formContext.formData.map((form: FormDTO) => {
                                     return (
                                         <SidebarMenuItem key={form.endpoint}>
-                                            <SidebarMenuButton
-                                                onClick={() => onFormSelect(form)}
-                                                className={`${activeBtn === form.endpoint
-                                                        ? sideActBtn + ""
-                                                        : sideInactBtn
-                                                    } text-base`}
-                                                asChild
-                                            >
-                                                <span>{form.formName}</span>
-                                            </SidebarMenuButton>
+                                            <Link to="">
+                                                <SidebarMenuButton
+                                                    onClick={() => onFormSelect(form)}
+                                                    className={`${activeBtn === form.endpoint
+                                                            ? sideActBtn + ""
+                                                            : sideInactBtn
+                                                        } text-base`}
+                                                    asChild
+                                                >
+                                                    <span>{form.formName}</span>
+                                                </SidebarMenuButton>
+                                            </Link>
                                         </SidebarMenuItem>
                                     );
                                 })}
@@ -140,16 +143,18 @@ function AppSideBar({ className }: React.ComponentProps<typeof Sidebar>) {
                     <SidebarGroupContent className="overflow-auto">
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <SidebarMenuButton
-                                    className={
-                                        activeBtn === "account" ? sideActBtn : sideInactBtn
-                                    }
-                                    onClick={() => {
-                                        setActiveBtn("account");
-                                    }}
-                                >
-                                    <span>Temp Account</span>
-                                </SidebarMenuButton>
+                                <Link to="/dashboard/account">
+                                    <SidebarMenuButton
+                                        className={
+                                            activeBtn === "account" ? sideActBtn : sideInactBtn
+                                        }
+                                        onClick={() => {
+                                            setActiveBtn("account");
+                                        }}
+                                    >
+                                        <span>Temp Account</span>
+                                    </SidebarMenuButton>
+                                </Link>
                             </SidebarMenuItem>
                         </SidebarMenu>
                     </SidebarGroupContent>

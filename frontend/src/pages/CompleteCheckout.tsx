@@ -1,5 +1,6 @@
 import { fulfillOrder } from "@/services/stripe";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
 
 function CompleteCheckout() {
 	const [searchParams, setSearchParams] = useSearchParams();

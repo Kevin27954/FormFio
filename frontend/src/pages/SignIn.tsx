@@ -15,9 +15,10 @@ import {
 
 import { Link } from "react-router";
 import { Label } from "@/components/ui/label";
+import initSupabaseAuth from "@/lib/supabase";
 
 function SignIn() {
-    const auth = SupabaseAuth;
+    const auth = initSupabaseAuth();
 
     const user = useRef<HTMLInputElement>(null);
     const pass = useRef<HTMLInputElement>(null);
@@ -68,7 +69,7 @@ function SignIn() {
                     ref={pass}
                     className="w-full px-4 py-4"
                 />
-                <Button onClick={handleClick}>Sign Up</Button>
+                <Button onClick={handleClick}>Sign In</Button>
             </CardContent>
             <CardFooter className="flex flex-col">
                 Don't Have account? Sign up here

@@ -14,6 +14,7 @@ import Checkout from "./pages/Checkout.tsx";
 import CompleteCheckout from "./pages/CompleteCheckout.tsx";
 import NewDash from "./pages/NewDash.tsx";
 import DashboardLayout from "./layout/DashboardLayout.tsx";
+import Account from "./pages/Account.tsx";
 
 const router = createBrowserRouter([
     {
@@ -30,9 +31,12 @@ const router = createBrowserRouter([
         ],
     },
     {
-        path: "/home",
+        path: "/dashboard",
         Component: DashboardLayout,
-        children: [{ path: "", Component: NewDash }],
+        children: [
+            { index: true, Component: NewDash },
+            { path: "account", Component: Account },
+        ],
     },
     {
         path: "/auth",
@@ -41,12 +45,15 @@ const router = createBrowserRouter([
             { path: "verify", Component: VerifyPage },
             { path: "signup", Component: SignUp },
             { path: "signin", Component: SignIn },
-            { path: ":endpoint", Component: Endpoint },
         ],
     },
     {
         path: "/complete",
         Component: CompleteCheckout,
+    },
+    {
+        path: "*",
+        Component: Endpoint,
     },
 ]);
 

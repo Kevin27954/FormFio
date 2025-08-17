@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { FormDataContext } from "@/hooks/form-context";
-import { useContext, useState, type FormEventHandler } from "react";
+import { useContext, useState } from "react";
 import getServer from "@/util/getserver";
 import { SubmissionContext } from "@/hooks/submission-context";
-import type { SubmissionDTO } from "@/types/submissions";
 import DataTable from "@/components/data-table";
 import { submitSubmissionAPI } from "@/services/submissions";
 
@@ -91,7 +89,9 @@ function NewDash() {
                     <div className="mr-auto">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="outline">{pageNum}</Button>
+                                <div>
+                                    Rows Per Page: <Button variant="outline"> {pageNum}</Button>
+                                </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-56">
                                 <DropdownMenuLabel>Appearance</DropdownMenuLabel>

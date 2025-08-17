@@ -26,10 +26,10 @@ function NavMenu() {
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild>
                                     <NavLink
-                                        to="/home"
-                                        data-active={location.pathname === "/home"}
+                                        to="/dashboard"
+                                        data-active={location.pathname === "/dashboard"}
                                     >
-                                        Home
+                                        Dashboard
                                     </NavLink>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>

@@ -1,5 +1,5 @@
+import initSupabaseAuth from "@/lib/supabase";
 import getServer from "@/util/getserver";
-import SupabaseAuth from "@/lib/supabase";
 
 /**
  * This returns a json of type T (you pass in the type that you expect), so it only consumes JSON APIs
@@ -9,18 +9,19 @@ const apiRequest = async <T>(
   options: any,
   withJWT = false,
 ): Promise<T> => {
-  const auth = SupabaseAuth;
+  const auth = initSupabaseAuth();
   uri = parseUrl(uri);
   const url = `${getServer()}${uri}`;
 
+  const token = withJWT ? await auth.getToken() : null;
+  const authHeader = withJWT && { Authorization: `Bearer ${token}` };
+
   const config = {
-    headers: {
-      ...(options.header === null || options.header === undefined
-        ? { "Content-Type": "application/json" }
-        : options.header),
-      ...(withJWT && { Authorization: `Bearer ${await auth.getToken()}` }),
-    },
     ...options,
+    headers: {
+      ...(options.headers ?? { "Content-Type": "application/json" }),
+      ...authHeader,
+    },
   };
 
   console.log(config);

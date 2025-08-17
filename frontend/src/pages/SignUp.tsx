@@ -14,9 +14,10 @@ import {
 } from "@/components/ui/card";
 import { Link } from "react-router";
 import { Label } from "@/components/ui/label";
+import initSupabaseAuth from "@/lib/supabase";
 
 function SignUp() {
-    const auth = SupabaseAuth;
+    const auth = initSupabaseAuth();
 
     const user = useRef<HTMLInputElement>(null);
     const pass = useRef<HTMLInputElement>(null);
