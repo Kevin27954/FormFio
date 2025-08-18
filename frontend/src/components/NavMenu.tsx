@@ -10,7 +10,6 @@ import { useLocation } from "react-router";
 
 function NavMenu() {
     const location = useLocation();
-    console.log(location.pathname);
 
     return (
         <nav className="sticky top-0 left-0 right-0 z-50 bg-background border-b border-border shadow-sm">

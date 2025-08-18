@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import getServer from "@/util/getserver";
 import { SubmissionContext } from "@/hooks/submission-context";
 import DataTable from "@/components/data-table";
@@ -15,14 +15,22 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
-const pageOptions = [15, 20, 30, 40, 50, 60, 80, 100];
+const itemOptions = [15, 20, 30, 40, 50, 60, 80, 100];
 
 function NewDash() {
     const submissionContext = useContext(SubmissionContext);
-    const [pageNum, setPageNum] = useState(pageOptions[0]);
+    // const [itemNum, setItemNum] = useState(itemOptions[0]);
+    const [pageNum, setPageNum] = useState(0);
+    const [isFirst, setIsFirst] = useState(true);
 
     console.log("New Dash");
+
+    useEffect(() => {
+        setIsFirst(true);
+        setPageNum(0);
+    }, [submissionContext.form]);
 
     function actionFn(formData: FormData) {
         const url = `/api${getServer()}/${submissionContext.form ? submissionContext.form.endpoint : "null"}`;
@@ -33,9 +41,6 @@ function NewDash() {
             })
             .join("&");
 
-        console.log(formBody);
-
-        // url = "https://formspree.io/f/xkgzgyop";
         submitSubmissionAPI(url, {
             method: "POST",
             headers: {
@@ -45,9 +50,107 @@ function NewDash() {
         });
     }
 
+    function changeItemNum(num: number) {
+        submissionContext.setItemNum(num);
+        submissionContext.getSubmission({
+            size: num,
+        });
+    }
+
+    function changePageNum(num: number, change: number) {
+        if (
+            change > 0 &&
+            submissionContext.submissions.length <= submissionContext.itemNum
+        ) {
+            toast("can't go past the limit");
+            return;
+        }
+
+        setIsFirst(num === 0);
+        setPageNum(num);
+
+        const idx =
+            change > 0
+                ? Math.min(
+                    submissionContext.submissions.length - 1,
+                    submissionContext.itemNum - 1,
+                )
+                : 0;
+
+        const last = submissionContext.submissions[idx].id;
+
+        submissionContext.getSubmission({
+            size: submissionContext.itemNum,
+            last: last,
+            change: change,
+        });
+    }
+
     return (
         <>
-            <h3>
+            <div className="bg-primary-foreground w-full h-full flex flex-col rounded-2xl border-primary/40 border-1">
+                <DataTable
+                    submissions={submissionContext.submissions}
+                    totalRow={submissionContext.itemNum}
+                />
+                <div className="flex p-4 mt-auto">
+                    <div className="mr-auto">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <div>
+                                    Rows Per Page:{" "}
+                                    <Button variant="outline">
+                                        {" "}
+                                        {submissionContext.itemNum}
+                                    </Button>
+                                </div>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56">
+                                <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                {itemOptions.map((itemOption) => {
+                                    return (
+                                        <DropdownMenuCheckboxItem
+                                            onClick={() => changeItemNum(itemOption)}
+                                            key={itemOption}
+                                        >
+                                            {itemOption}
+                                        </DropdownMenuCheckboxItem>
+                                    );
+                                })}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+
+                    <div className="space-x-6 ml-auto">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                                changePageNum(pageNum - 1, -1);
+                            }}
+                            disabled={isFirst}
+                        >
+                            Previous
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                                changePageNum(pageNum + 1, 1);
+                            }}
+                            disabled={
+                                submissionContext.submissions.length <=
+                                submissionContext.itemNum
+                            }
+                        >
+                            Next
+                        </Button>
+                    </div>
+                </div>
+            </div>
+
+            <h3 className="pt-4">
                 {submissionContext.form ? submissionContext.form.endpoint : "null"}
             </h3>
             <form action={actionFn} method="post">
@@ -79,47 +182,6 @@ function NewDash() {
 
                 <Button type="submit">Submit</Button>
             </form>
-
-            <div className="bg-primary-foreground w-full h-full flex flex-col">
-                <DataTable
-                    submissions={submissionContext.submissions}
-                    totalRow={pageNum}
-                />
-                <div className="flex p-4 mt-auto">
-                    <div className="mr-auto">
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <div>
-                                    Rows Per Page: <Button variant="outline"> {pageNum}</Button>
-                                </div>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56">
-                                <DropdownMenuLabel>Appearance</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                {pageOptions.map((pageOption) => {
-                                    return (
-                                        <DropdownMenuCheckboxItem
-                                            onClick={() => setPageNum(pageOption)}
-                                            key={pageOption}
-                                        >
-                                            {pageOption}
-                                        </DropdownMenuCheckboxItem>
-                                    );
-                                })}
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
-
-                    <div className="space-x-6 ml-auto">
-                        <Button variant="outline" size="sm">
-                            Previous
-                        </Button>
-                        <Button variant="outline" size="sm">
-                            Next
-                        </Button>
-                    </div>
-                </div>
-            </div>
         </>
     );
 }

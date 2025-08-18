@@ -58,8 +58,17 @@ public class SubmissionService {
         int page;
         String sortBy;
 
+        System.out.println(params);
+
+        // Maybe this is useless. Maybe there is a way for me to just make it if empty
+        // it doesn't apply sorter? Let's see if that exist first then create that.
+        // Ifnot then I don't think creting a string like that is safe though.
+        // BUT WAIT IF IT HAS IT THEN I CAN JUST USE (?)=(?) for everything.
+
+
         page = Integer.parseInt(params.getOrDefault("page", "0"));
 
-        return this.submissionTable.getFormSubmissions(endpoint);
+
+        return this.submissionTable.getFormSubmissions(endpoint, params);
     }
 }

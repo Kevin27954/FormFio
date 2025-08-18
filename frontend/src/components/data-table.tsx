@@ -29,12 +29,12 @@ function DataTable({
     const dataKeys = extractKeys();
 
     return submissions.length === 0 ? (
-        <div className="h-full">
-            <Table>
-                <TableHeader className="sticky top-0 bg-sidebar z-50">
-                    <TableRow>
+        <div className="h-full rounded-t-2xl">
+            <Table rounded="rounded-t-2xl">
+                <TableHeader className="sticky top-0 z-50">
+                    <TableRow className="bg-green-200">
                         <TableHead>
-                            <Checkbox />
+                            <Checkbox className="bg-primary-foreground border-primary" />
                         </TableHead>
                         <TableHead className="text-center">Source</TableHead>
                         <TableHead className="text-center">Created At</TableHead>
@@ -52,11 +52,11 @@ function DataTable({
             </div>
         </div>
     ) : (
-        <Table>
-            <TableHeader className="sticky top-0 bg-sidebar z-50">
+        <Table rounded="rounded-t-2xl">
+            <TableHeader className="sticky top-0 bg-green-200 z-50">
                 <TableRow>
                     <TableHead>
-                        <Checkbox />
+                        <Checkbox className="bg-primary-foreground border-primary" />
                     </TableHead>
                     <TableHead>Source</TableHead>
                     <TableHead>Created At</TableHead>
@@ -74,7 +74,7 @@ function DataTable({
                         <TableRow key={index}>
                             <TableCell>
                                 <div className="flex">
-                                    <Checkbox />
+                                    <Checkbox className="border-primary" />
                                 </div>
                             </TableCell>
                             <TableCell>{submission.source}</TableCell>

@@ -4,6 +4,7 @@ import com.formkio.formfio.dto.SubmissionDTO;
 import com.formkio.formfio.model.SubmissionsModel;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SubmissionMethods {
     /**
@@ -17,8 +18,8 @@ public interface SubmissionMethods {
     /**
      * Grabs the submissions for a specific form endpoint
      *
-     * @param endpoint
+     * @param endpoint, params
      * @return
      */
-    List<SubmissionDTO> getFormSubmissions(String endpoint) ;
+    List<SubmissionDTO> getFormSubmissions(String endpoint, Map<String, String> params ) ;
 }

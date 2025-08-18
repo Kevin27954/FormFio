@@ -30,13 +30,10 @@ function Account() {
 			return;
 		}
 
-		console.log(JSON.stringify({ email: email }));
-
 		updateEmailAPI(url, {
 			method: "POST",
 			body: JSON.stringify({ email: email }),
-		}).then((str) => {
-			console.log(str);
+		}).then(() => {
 			auth.changeEmail(email);
 		});
 	}

@@ -24,8 +24,6 @@ const apiRequest = async <T>(
     },
   };
 
-  console.log(config);
-
   return fetch(url, config)
     .then((res) => {
       if (!res.ok) {

@@ -2,18 +2,28 @@ package com.formkio.formfio.dto;
 
 import java.time.LocalDateTime;
 
-public class SubmissionDTO {
+public class SubmissionDTO implements Comparable<SubmissionDTO> {
 
+    private int id;
     private String data;
     private String source;
     private String endpoint;
     private LocalDateTime createdDate;
 
-    public SubmissionDTO(String data, String source, String endpoint, LocalDateTime createdDate) {
+    public SubmissionDTO(int id, String data, String source, String endpoint, LocalDateTime createdDate) {
+        this.id = id;
         this.data = data;
         this.source = source;
         this.endpoint = endpoint;
         this.createdDate = createdDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getData() {
@@ -50,9 +60,15 @@ public class SubmissionDTO {
     }
 
     @Override
+    public int compareTo(SubmissionDTO sub) {
+        return this.createdDate.compareTo(sub.createdDate);
+    }
+
+    @Override
     public String toString() {
         return "SubmissionDTO{" +
-                "data='" + data + '\'' +
+                "id=" + id +
+                ", data='" + data + '\'' +
                 ", source='" + source + '\'' +
                 ", endpoint='" + endpoint + '\'' +
                 ", createdDate=" + createdDate +
