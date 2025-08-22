@@ -16,12 +16,15 @@ import NewDash from "./pages/NewDash.tsx";
 import DashboardLayout from "./layout/DashboardLayout.tsx";
 import Account from "./pages/Account.tsx";
 import Analytic from "./pages/Analytic.tsx";
+import { AuthProvider } from "./hooks/auth-context.tsx";
+import "./App.css";
+import Home from "./pages/Home.tsx";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		Component: NavLayout,
-		children: [{ path: "", Component: App }],
+		children: [{ index: true, Component: Home }],
 	},
 	{
 		path: "/plans",
@@ -61,7 +64,9 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<RouterProvider router={router} />
-		<Toaster />
+		<AuthProvider>
+			<RouterProvider router={router} />
+			<Toaster />
+		</AuthProvider>
 	</StrictMode>,
 );

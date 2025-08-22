@@ -1,6 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { useRef } from "react";
-import SupabaseAuth from "@/lib/supabase";
+import { useContext, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -13,26 +12,31 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Label } from "@/components/ui/label";
-import initSupabaseAuth from "@/lib/supabase";
+import { AuthContext } from "@/hooks/auth-context";
+import type { User } from "@supabase/supabase-js";
 
 function SignIn() {
-    const auth = initSupabaseAuth();
+    const authContext = useContext(AuthContext);
 
     const user = useRef<HTMLInputElement>(null);
     const pass = useRef<HTMLInputElement>(null);
+
+    const navigate = useNavigate();
 
     async function handleClick() {
         if (user.current === null || pass.current === null) {
             toast("user and pass can't be null");
             return;
         }
-        await auth.signInPassword(user.current.value, pass.current.value);
-    }
 
-    async function getSession() {
-        console.log(await auth.getToken());
+        authContext.auth
+            .signInPassword(user.current.value, pass.current.value)
+            .then((user: User | null) => {
+                authContext.setUser(user);
+                navigate("/dashboard");
+            });
     }
 
     return (

@@ -10,6 +10,7 @@ RUN npm install
 
 FROM base AS source
 COPY --from=install /usr/app/node_modules node_modules
+
 COPY . .
 
 FROM source as dev

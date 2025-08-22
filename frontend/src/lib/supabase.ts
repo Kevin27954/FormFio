@@ -12,7 +12,7 @@ class SupabaseAuth {
 
   constructor() {
     this.client = createClient(URL, KEY).auth;
-    // this.client.refreshSession();
+    this.client.refreshSession();
   }
 
   getUserInfo() {
@@ -20,34 +20,36 @@ class SupabaseAuth {
   }
 
   async signUpPassword(email: string, password: string) {
-    const {
-      user,
-      session: _session,
-      error,
-    } = await this.client.signUp({
-      email: email,
-      password: password,
-    });
+    return this.client
+      .signUp({
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        if (res.error != null) {
+          console.log("error occured: ", res.error);
+          return;
+        }
 
-    if (error != null) {
-      console.log("error occured: ", error);
-      return;
-    }
-
-    await signUpAPI("/api/users/api/register", {
-      method: "POST",
-      body: JSON.stringify(user),
-    });
-
-    redirect("/auth/verify");
+        signUpAPI("/api/users/api/register", {
+          method: "POST",
+          body: JSON.stringify(res.user),
+        }).then((res) => {
+          return res;
+        });
+      });
   }
 
   async signInPassword(email: string, password: string) {
-    const res = await this.client.signIn({ email: email, password: password });
-    if (res.error !== null) {
-      console.log("error occured: ", res.error);
-      return;
-    }
+    return this.client
+      .signIn({ email: email, password: password })
+      .then((res) => {
+        if (res.error !== null) {
+          console.log("error occured: ", res.error);
+          return;
+        }
+        return res.user;
+      });
   }
 
   async getToken() {
@@ -59,6 +61,10 @@ class SupabaseAuth {
       return;
     }
     return session.access_token;
+  }
+
+  async signOut() {
+    this.client.signOut();
   }
 
   async changeEmail(newEmail: string) {

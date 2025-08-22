@@ -161,18 +161,6 @@ function NewDash() {
                     <Label>password</Label> <Input type="password" name="password" />
                 </div>
                 <div className="flex items-center space-x-2">
-                    <Label>random nullshit </Label>
-                    <Input type="text" name="random nullshit" />
-                </div>
-                <div className="flex items-center space-x-2">
-                    <Label>random 222ullshit </Label>
-                    <Input type="text" name="random 22ullshit" />
-                </div>
-                <div className="flex items-center space-x-2">
-                    <Label>skldfskj 222ullshit </Label>
-                    <Input type="text" name="asdf 22ullshit" />
-                </div>
-                <div className="flex items-center space-x-2">
                     <Label>asdf 222ullshit </Label>
                     <Input
                         type="text"
